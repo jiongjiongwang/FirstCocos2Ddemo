@@ -22,6 +22,8 @@ public:
     CREATE_FUNC(HelloWorld);
     
     cocos2d::Sprite *_spriteButton1;
+    
+    cocos2d::Sprite *_spriteButton2;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

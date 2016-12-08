@@ -38,6 +38,8 @@ bool HelloWorld::init()
     //当前的width:480.000031 Height:270.422546(横向屏幕)
     auto visibleSize = Director::getInstance()->getVisibleSize();
     
+    
+    
     //场景的坐标:x(x轴)和y(y轴)
     //当前的x:-0.0000152587891 y:24.7887268
     //OpenGL坐标系:原点在左下角
@@ -57,7 +59,6 @@ bool HelloWorld::init()
                                 origin.y + closeItem->getContentSize().height/2));
     
     //(1)创建图片精灵(Sprite类)
-    //1-正常状态下
     auto pressNormal = Sprite::create("HelloWorld.png");
     
     //(2)生成使用精灵图片的按钮(MenuItemSprite类)
@@ -66,14 +67,15 @@ bool HelloWorld::init()
     
     pressItem->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     
-    
 
-    // create menu, it's an autorelease object
     //Menu类->Layer类->Node类->Ref类
     auto menu = Menu::create(closeItem,pressItem, NULL);
     menu->setPosition(Vec2::ZERO);
+    
     //1为层级数，决定背景精灵的绘制顺序,参数数值越大，其绘制时就会越靠前
     this->addChild(menu, 1);
+    
+    
     
     
     //label
@@ -103,7 +105,6 @@ bool HelloWorld::init()
     
     /*
     //创建精灵类
-    //精灵类Sprite->Node类->Ref类
     auto sprite = Sprite::create("HelloWorld.png");
 
     sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
@@ -115,33 +116,22 @@ bool HelloWorld::init()
     
     
     
-    //利用button_gray创建精灵类
     //精灵类1
     //精灵类Sprite->Node类->Ref类
     _spriteButton1 = Sprite::create("button_gray_disable.9.png");
-    _spriteButton1->setPosition(Vec2(_spriteButton1->getContentSize().width + origin.x, visibleSize.height/2 + origin.y));
+    _spriteButton1->setPosition(Vec2(_spriteButton1->getContentSize().width/2 + origin.x, visibleSize.height/2 + origin.y));
     
     this->addChild(_spriteButton1, 0);
     
     
     
     //精灵类2
-    /*
-    auto spriteButton2 = Sprite::create("button_gray_disable.9.png");
-    spriteButton2->setPosition(Vec2(spriteButton2->getContentSize().width + origin.x, visibleSize.height/2 + origin.y - spriteButton2->getContentSize().height));
+    _spriteButton2 = Sprite::create("button_gray_disable.9.png");
+    _spriteButton2->setPosition(Vec2(_spriteButton2->getContentSize().width/2 + origin.x, visibleSize.height/2 + origin.y - _spriteButton2->getContentSize().height));
     
-    this->addChild(spriteButton2, 0);
-    */
+    this->addChild(_spriteButton2, 0);
     
-    
-    /*
-    //添加动作类
-    auto actionMove = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
-    //运行动作
-    spriteButton1->runAction(actionMove);
-    */
-    
-    
+
     
     //添加底部的键盘精灵
     //1-左
@@ -175,10 +165,18 @@ void HelloWorld::ButtonPress(Ref* pSender)
 {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     
-    //添加动作类
-    auto actionMove = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
-    //运行动作
-    _spriteButton1->runAction(actionMove);
+    //添加动作类1
+    auto actionMove1 = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
+    //运行动作1
+    _spriteButton1->runAction(actionMove1);
+    
+    
+    //添加动作类2
+    auto actionMove2 = MoveBy::create(3.0f, Vec2(0,-visibleSize.height/2 + _spriteButton2->getContentSize().height));
+    
+    //运行动作2
+    _spriteButton2->runAction(actionMove2);
+    
 }
 
 
