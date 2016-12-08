@@ -6,6 +6,8 @@
 class HelloWorld : public cocos2d::Layer
 {
 public:
+    
+    
     static cocos2d::Scene* createScene();
 
     virtual bool init();
@@ -13,8 +15,13 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
+    void ButtonPress(Ref* pSender);
+    
+    
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+    
+    cocos2d::Sprite *_spriteButton1;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
