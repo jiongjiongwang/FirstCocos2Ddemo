@@ -17,6 +17,8 @@ Scene* HelloWorld::createScene()
 
     //将初始化之后的实例layer挂载到父节点上
     scene->addChild(layer);
+    
+    
 
     //返回父节点对象指针
     return scene;
@@ -58,61 +60,39 @@ bool HelloWorld::init()
     closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
                                 origin.y + closeItem->getContentSize().height/2));
     
+    //1-利用图片生成按钮
+    /*
     //(1)创建图片精灵(Sprite类)
-    auto pressNormal = Sprite::create("HelloWorld.png");
+    auto pressImage = Sprite::create("HelloWorld.png");
     
     //(2)生成使用精灵图片的按钮(MenuItemSprite类)
     //MenuItemSprite类->MenuItem类->Node类->Ref类
-    auto pressItem = MenuItemSprite::create(pressNormal, pressNormal, CC_CALLBACK_1(HelloWorld::ButtonPress, this));
+    auto pressItem = MenuItemSprite::create(pressImage, pressImage, CC_CALLBACK_1(HelloWorld::ButtonPress, this));
     
     pressItem->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    */
     
+    
+    
+    //2-使用标签label生成按钮
+    //2.1 生成Label类
+    //Label类->Node类->Ref类
+    _pressLabel = Label::createWithTTF("Start", "fonts/Marker Felt.ttf",25);
+    
+    //2.2 利用label对象生成MenuItemLabel类对象
+    //MenuItemLabel类->MenuItem类->Node类->Ref类
+    auto labelPress = MenuItemLabel::create(_pressLabel, CC_CALLBACK_1(HelloWorld::ButtonPress, this));
+    
+    labelPress->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 
+    
+    //3-Menu类:负责管理场景上的UI控件
     //Menu类->Layer类->Node类->Ref类
-    auto menu = Menu::create(closeItem,pressItem, NULL);
+    auto menu = Menu::create(closeItem,labelPress, NULL);
     menu->setPosition(Vec2::ZERO);
     
     //1为层级数，决定背景精灵的绘制顺序,参数数值越大，其绘制时就会越靠前
     this->addChild(menu, 1);
-    
-    
-    
-    
-    //label
-    /*
-    // 3. add your codes below...
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 25);
-    
-    // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-    
-    
-    
-    
-    auto smalLabel = Label::createWithTTF("by Cocos2d", "fonts/Marker Felt.ttf", 25);
-    
-    // position the label on the center of the screen
-    smalLabel->setPosition(Vec2(origin.x + visibleSize.width/7 * 6,
-                            origin.y + visibleSize.height - label->getContentSize().height - 5));
-    
-    // add the label as a child to this layer
-    this->addChild(smalLabel, 1);
-    */
-    
-    /*
-    //创建精灵类
-    auto sprite = Sprite::create("HelloWorld.png");
-
-    sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    this->addChild(sprite, 0);
-    */
-    
-    
     
     
     
@@ -129,32 +109,63 @@ bool HelloWorld::init()
     _spriteButton2 = Sprite::create("button_gray_disable.9.png");
     _spriteButton2->setPosition(Vec2(_spriteButton2->getContentSize().width/2 + origin.x, visibleSize.height/2 + origin.y - _spriteButton2->getContentSize().height));
     
-    this->addChild(_spriteButton2, 0);
+    //设置精灵2的颜色(在原有的白色图片基础上进行重新绘色为红色)
+    _spriteButton2->setColor(Color3B(255,0,0));
+    //设置精灵2的透明度
+    _spriteButton2->setOpacity(128);
     
+    
+    this->addChild(_spriteButton2, 0);
 
     
     //添加底部的键盘精灵
     //1-左
-    auto leftKeySprite = Sprite::create("Left.png");
+    _leftKeySprite = Sprite::create("Left.png");
     
-    leftKeySprite->setPosition(Vec2(leftKeySprite->getContentSize().width/2 + origin.x,origin.y + leftKeySprite->getContentSize().height/2));
+    _leftKeySprite->setPosition(Vec2(_leftKeySprite->getContentSize().width/2 + origin.x,origin.y + _leftKeySprite->getContentSize().height/2));
     
-    this->addChild(leftKeySprite);
+    this->addChild(_leftKeySprite);
+    
+    _keySpriteHeight = _leftKeySprite->getContentSize().height;
+    
+    
+    
+    
+    //批量渲染
+    /*
+    //1-利用图片建立SpriteBatchNode对象(最多同时绘30个精灵)
+    auto midBatchNode = SpriteBatchNode::create("Mid.png",30);
+    this->addChild(midBatchNode);
+    
+    //2-生成精灵对象的过程
+    
+    for (int i = 1; i <= 20; i++)
+    {
+        auto midKeySprite = Sprite::createWithTexture(midBatchNode->getTexture(), Rect(60 * i + origin.x + _leftKeySprite->getContentSize().width, origin.y + 150/2, 60, 150));
+        
+        midBatchNode->addChild(midKeySprite);
+
+    }
+    */
     
     
     //2-中
+
     auto midKeySprite = Sprite::create("Mid.png");
     
-    midKeySprite->setPosition(Vec2(midKeySprite->getContentSize().width/2 + origin.x + leftKeySprite->getContentSize().width,origin.y + midKeySprite->getContentSize().height/2));
+    midKeySprite->setPosition(Vec2(midKeySprite->getContentSize().width/2 + origin.x + _leftKeySprite->getContentSize().width,origin.y + midKeySprite->getContentSize().height/2));
     
     this->addChild(midKeySprite);
+    
+    
     
     //3-右
     auto rightKeySprite = Sprite::create("Right.png");
     
-    rightKeySprite->setPosition(Vec2(rightKeySprite->getContentSize().width/2 + origin.x + leftKeySprite->getContentSize().width + midKeySprite->getContentSize().width,origin.y + rightKeySprite->getContentSize().height/2));
+    rightKeySprite->setPosition(Vec2(rightKeySprite->getContentSize().width/2 + origin.x + _leftKeySprite->getContentSize().width + midKeySprite->getContentSize().width,origin.y + rightKeySprite->getContentSize().height/2));
     
     this->addChild(rightKeySprite);
+    
     
     
     
@@ -163,24 +174,83 @@ bool HelloWorld::init()
 
 void HelloWorld::ButtonPress(Ref* pSender)
 {
+    
     auto visibleSize = Director::getInstance()->getVisibleSize();
     
-    //添加动作类1
-    auto actionMove1 = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
+    //场景的坐标:x(x轴)和y(y轴)
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    
+    //1-添加动作类:移动动作
+    //auto actionMoveBy = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
+    auto actionMoveTo = MoveTo::create(4.0f, Vec2(_spriteButton1->getContentSize().width/2 + origin.x,origin.y + _keySpriteHeight));
+    
+    //Move1的反向操作
+    //auto actionByBack = actionMove1->reverse();
+    
+    
+    //2-添加动作类:缩放动作
+    //auto labelScaleTo = ScaleTo::create(1.0f,0.0f,0.0f);
+    //auto actionScaleBy = ScaleBy::create(1.0f,2.0f);
+    
+    
+    //设置锚点
+    //_pressLabel->setAnchorPoint(Vec2(0.5f,0.5f));
+    
+    //3-添加动作类:淡入淡出动作
+    //3.1 淡入动作:透明度从0慢慢变为255从而显示在屏幕上
+   // auto fadeInAction = FadeIn::create(1.0f);
+    //3.2 淡出动作:透明度从255逐渐变为0从而在屏幕上消失
+    auto fadeOutAction = FadeOut::create(0.5f);
+    
+    _pressLabel->runAction(fadeOutAction);
+    //移除开始label
+    this->removeChild(_pressLabel);
+    
+    
+    //4-变色类动作
+    /*
+    auto tintToAction = TintTo::create(2, 255, 0, 255);
+    
+    _leftKeySprite->runAction(tintToAction);
+    */
+    auto tintToAction = TintTo::create(4, 255, 0, 255);
+    
+    //5-多个动作同步进行
+    auto spawnAction = Spawn::create(actionMoveTo,tintToAction, NULL);
+    
     //运行动作1
-    _spriteButton1->runAction(actionMove1);
+    _spriteButton1->runAction(spawnAction);
     
     
-    //添加动作类2
-    auto actionMove2 = MoveBy::create(3.0f, Vec2(0,-visibleSize.height/2 + _spriteButton2->getContentSize().height));
     
-    //运行动作2
-    _spriteButton2->runAction(actionMove2);
+    
+     //精灵2的动作
+     //1-运动1
+     auto actionMove1 = MoveBy::create(3.0f, Vec2(visibleSize.width/2,0));
+     //2-运动2:delay动作(延时2秒)
+     auto actionDelay = DelayTime::create(2);
+    //3-运动3
+    auto actionMove2 = MoveBy::create(4.0f, Vec2(-visibleSize.width/2,0));
+    //4-调用函数动作
+    //auto actionCalFun = CallFunc::create(HelloWorld::ActionDone());
+    
+    
+     //顺序动作
+    auto FiniteTimeAction = Sequence::create(actionMove1,actionDelay,actionMove2, NULL);
+    
+    
+     _spriteButton2->runAction(FiniteTimeAction);
+    
+    
+    
     
 }
 
-
-
+void HelloWorld::ActionDone()
+{
+    
+}
 //点击右下角的退出按钮的触发事件
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {

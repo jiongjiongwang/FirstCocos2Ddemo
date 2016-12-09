@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 
+
 class HelloWorld : public cocos2d::Layer
 {
 public:
@@ -17,13 +18,27 @@ public:
     
     void ButtonPress(Ref* pSender);
     
+    void ActionDone();
+    
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
+    
+    
+    //精灵属性(指针)
     cocos2d::Sprite *_spriteButton1;
     
     cocos2d::Sprite *_spriteButton2;
+    
+    //键盘精灵属性
+    cocos2d::Sprite *_leftKeySprite;
+    
+    //Label属性(指针)
+    cocos2d::Label *_pressLabel;
+    
+    
+    float _keySpriteHeight;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
