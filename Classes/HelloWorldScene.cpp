@@ -1,6 +1,8 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
+//声明cocos2d的命名空间
+//#define USING_NS_CC  using namespace cocos2d
 USING_NS_CC;
 
 
@@ -38,14 +40,14 @@ bool HelloWorld::init()
     
     //场景大小:width(宽度)和height(高度)
     //当前的width:480.000031 Height:270.422546(横向屏幕)
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    //auto visibleSize = Director::getInstance()->getVisibleSize();
     
     
     
     //场景的坐标:x(x轴)和y(y轴)
     //当前的x:-0.0000152587891 y:24.7887268
     //OpenGL坐标系:原点在左下角
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     
     
@@ -57,8 +59,8 @@ bool HelloWorld::init()
                                            "CloseSelected.png",
                                            CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
     
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
-                                origin.y + closeItem->getContentSize().height/2));
+    closeItem->setPosition(Vec2(WIN_ORIGIN.x + WIN_SIZE.width - closeItem->getContentSize().width/2 ,
+                                WIN_ORIGIN.y + closeItem->getContentSize().height/2));
     
     //1-利用图片生成按钮
     /*
@@ -83,7 +85,7 @@ bool HelloWorld::init()
     //MenuItemLabel类->MenuItem类->Node类->Ref类
     auto labelPress = MenuItemLabel::create(_pressLabel, CC_CALLBACK_1(HelloWorld::ButtonPress, this));
     
-    labelPress->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    labelPress->setPosition(Vec2(WIN_SIZE.width/2 + WIN_ORIGIN.x, WIN_SIZE.height/2 + WIN_ORIGIN.y));
 
     
     //3-Menu类:负责管理场景上的UI控件
@@ -99,7 +101,7 @@ bool HelloWorld::init()
     //精灵类1
     //精灵类Sprite->Node类->Ref类
     _spriteButton1 = Sprite::create("button_gray_disable.9.png");
-    _spriteButton1->setPosition(Vec2(_spriteButton1->getContentSize().width/2 + origin.x, visibleSize.height/2 + origin.y));
+    _spriteButton1->setPosition(Vec2(_spriteButton1->getContentSize().width/2 + WIN_ORIGIN.x, WIN_SIZE.height/2 + WIN_ORIGIN.y));
     
     this->addChild(_spriteButton1, 0);
     
@@ -107,7 +109,7 @@ bool HelloWorld::init()
     
     //精灵类2
     _spriteButton2 = Sprite::create("button_gray_disable.9.png");
-    _spriteButton2->setPosition(Vec2(_spriteButton2->getContentSize().width/2 + origin.x, visibleSize.height/2 + origin.y - _spriteButton2->getContentSize().height));
+    _spriteButton2->setPosition(Vec2(_spriteButton2->getContentSize().width/2 + WIN_ORIGIN.x, WIN_SIZE.height/2 + WIN_ORIGIN.y - _spriteButton2->getContentSize().height));
     
     //设置精灵2的颜色(在原有的白色图片基础上进行重新绘色为红色)
     _spriteButton2->setColor(Color3B(255,0,0));
@@ -122,7 +124,7 @@ bool HelloWorld::init()
     //1-左
     _leftKeySprite = Sprite::create("Left.png");
     
-    _leftKeySprite->setPosition(Vec2(_leftKeySprite->getContentSize().width/2 + origin.x,origin.y + _leftKeySprite->getContentSize().height/2));
+    _leftKeySprite->setPosition(Vec2(_leftKeySprite->getContentSize().width/2 + WIN_ORIGIN.x,WIN_ORIGIN.y + _leftKeySprite->getContentSize().height/2));
     
     this->addChild(_leftKeySprite);
     
@@ -153,7 +155,7 @@ bool HelloWorld::init()
 
     auto midKeySprite = Sprite::create("Mid.png");
     
-    midKeySprite->setPosition(Vec2(midKeySprite->getContentSize().width/2 + origin.x + _leftKeySprite->getContentSize().width,origin.y + midKeySprite->getContentSize().height/2));
+    midKeySprite->setPosition(Vec2(midKeySprite->getContentSize().width/2 + WIN_ORIGIN.x + _leftKeySprite->getContentSize().width,WIN_ORIGIN.y + midKeySprite->getContentSize().height/2));
     
     this->addChild(midKeySprite);
     
@@ -162,12 +164,12 @@ bool HelloWorld::init()
     //3-右
     auto rightKeySprite = Sprite::create("Right.png");
     
-    rightKeySprite->setPosition(Vec2(rightKeySprite->getContentSize().width/2 + origin.x + _leftKeySprite->getContentSize().width + midKeySprite->getContentSize().width,origin.y + rightKeySprite->getContentSize().height/2));
+    rightKeySprite->setPosition(Vec2(rightKeySprite->getContentSize().width/2 + WIN_ORIGIN.x + _leftKeySprite->getContentSize().width + midKeySprite->getContentSize().width,WIN_ORIGIN.y + rightKeySprite->getContentSize().height/2));
     
     this->addChild(rightKeySprite);
     
     
-    
+    this->scheduleUpdate();
     
     return true;
 }
@@ -175,15 +177,15 @@ bool HelloWorld::init()
 void HelloWorld::ButtonPress(Ref* pSender)
 {
     
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    //auto visibleSize = Director::getInstance()->getVisibleSize();
     
     //场景的坐标:x(x轴)和y(y轴)
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     
     //1-添加动作类:移动动作
     //auto actionMoveBy = MoveBy::create(4.0f, Vec2(0,-visibleSize.height/2));
-    auto actionMoveTo = MoveTo::create(4.0f, Vec2(_spriteButton1->getContentSize().width/2 + origin.x,origin.y + _keySpriteHeight));
+    auto actionMoveTo = MoveTo::create(4.0f, Vec2(_spriteButton1->getContentSize().width/2 + WIN_ORIGIN.x,WIN_ORIGIN.y + _keySpriteHeight));
     
     //Move1的反向操作
     //auto actionByBack = actionMove1->reverse();
@@ -227,11 +229,11 @@ void HelloWorld::ButtonPress(Ref* pSender)
     
      //精灵2的动作
      //1-运动1
-     auto actionMove1 = MoveBy::create(3.0f, Vec2(visibleSize.width/2,0));
+     auto actionMove1 = MoveBy::create(3.0f, Vec2(WIN_SIZE.width/2,0));
      //2-运动2:delay动作(延时2秒)
      auto actionDelay = DelayTime::create(2);
     //3-运动3
-    auto actionMove2 = MoveBy::create(4.0f, Vec2(-visibleSize.width/2,0));
+    auto actionMove2 = MoveBy::create(4.0f, Vec2(-WIN_SIZE.width/2,0));
     //4-调用函数动作
     //auto actionCalFun = CallFunc::create(HelloWorld::ActionDone());
     
@@ -245,6 +247,24 @@ void HelloWorld::ButtonPress(Ref* pSender)
     
     
     
+}
+
+//实现update方法
+//参数dt:上一次调用这个函数到本次调用这个函数之间间隔多少秒
+void HelloWorld::update(float dt)
+{
+    //printf("update\n");
+    
+    //获取精灵1的坐标值
+    Vec2 sprite1Positin = _spriteButton1->getPosition();
+    
+    //接触到了键盘之后了
+    if (sprite1Positin == Vec2(_spriteButton1->getContentSize().width/2 + WIN_ORIGIN.x,WIN_ORIGIN.y + _leftKeySprite->getContentSize().height))
+    {
+        printf("接触到了键盘\n");
+    }
+
+
 }
 
 void HelloWorld::ActionDone()
@@ -268,3 +288,4 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     
     
 }
+

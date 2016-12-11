@@ -3,6 +3,12 @@
 
 #include "cocos2d.h"
 
+//屏幕大小的宏
+#define WIN_SIZE   Director::getInstance()->getVisibleSize()
+
+//屏幕初始坐标的宏
+#define WIN_ORIGIN   Director::getInstance()->getVisibleOrigin()
+
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -39,6 +45,9 @@ public:
     
     
     float _keySpriteHeight;
+    
+    /* 重写update函数 */
+    virtual void  update(float dt);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
