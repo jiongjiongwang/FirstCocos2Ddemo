@@ -74,8 +74,6 @@
 		FE3CBBC01DF90B41007E6300 /* button_gray_disable.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */; };
 		FE3CBBC11DF90B41007E6300 /* button_gray_press.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */; };
 		FE3CBBC71DF94F91007E6300 /* Mid.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBC41DF94F91007E6300 /* Mid.png */; };
-		FE3CBBCA1DF95034007E6300 /* Left.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBC91DF95034007E6300 /* Left.png */; };
-		FE3CBBCC1DF95039007E6300 /* Right.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBCB1DF95039007E6300 /* Right.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -182,8 +180,6 @@
 		FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_disable.9.png; sourceTree = "<group>"; };
 		FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_press.9.png; sourceTree = "<group>"; };
 		FE3CBBC41DF94F91007E6300 /* Mid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mid.png; sourceTree = "<group>"; };
-		FE3CBBC91DF95034007E6300 /* Left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Left.png; sourceTree = "<group>"; };
-		FE3CBBCB1DF95039007E6300 /* Right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Right.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,9 +312,7 @@
 				FE3CBBBC1DF90B41007E6300 /* button_gray_normal.9.png */,
 				FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */,
 				FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */,
-				FE3CBBC91DF95034007E6300 /* Left.png */,
 				FE3CBBC41DF94F91007E6300 /* Mid.png */,
-				FE3CBBCB1DF95039007E6300 /* Right.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -487,10 +481,8 @@
 			files = (
 				FE3CBBBF1DF90B41007E6300 /* button_gray_normal.9.png in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
-				FE3CBBCA1DF95034007E6300 /* Left.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
-				FE3CBBCC1DF95039007E6300 /* Right.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				46880B8119C43A67006E1F66 /* HelloWorld.png in Resources */,
