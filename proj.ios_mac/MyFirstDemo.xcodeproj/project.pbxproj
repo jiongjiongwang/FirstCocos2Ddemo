@@ -74,6 +74,7 @@
 		FE3CBBC01DF90B41007E6300 /* button_gray_disable.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */; };
 		FE3CBBC11DF90B41007E6300 /* button_gray_press.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */; };
 		FE3CBBC71DF94F91007E6300 /* Mid.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBC41DF94F91007E6300 /* Mid.png */; };
+		FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +181,7 @@
 		FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_disable.9.png; sourceTree = "<group>"; };
 		FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_press.9.png; sourceTree = "<group>"; };
 		FE3CBBC41DF94F91007E6300 /* Mid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mid.png; sourceTree = "<group>"; };
+		FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spriteButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,6 +313,7 @@
 				46880B7A19C43A67006E1F66 /* HelloWorld.png */,
 				FE3CBBBC1DF90B41007E6300 /* button_gray_normal.9.png */,
 				FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */,
+				FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */,
 				FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */,
 				FE3CBBC41DF94F91007E6300 /* Mid.png */,
 			);
@@ -505,6 +508,7 @@
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				46880B7B19C43A67006E1F66 /* CloseNormal.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
+				FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */,
 				FE3CBBC01DF90B41007E6300 /* button_gray_disable.9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

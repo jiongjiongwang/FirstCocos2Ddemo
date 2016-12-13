@@ -93,25 +93,28 @@ bool HelloWorld::init()
     }
     
     
-    //精灵类1(与左边的键盘对齐)
-    //精灵类Sprite->Node类->Ref类
-    _spriteButton1 = Sprite::create("button_gray_disable.9.png");
-    //设置锚点
-    _spriteButton1->setAnchorPoint(Vec2(0.5f,0.5f));
-    //位置坐标(锚点的坐标)
-    _spriteButton1->setPosition(Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x, WIN_SIZE.height/2 + WIN_ORIGIN.y));
-    
-    //设置颜色为红色
-    _spriteButton1->setColor(Color3B(255, 0, 0));
-    this->addChild(_spriteButton1, 0);
     
     
+    //初始化为不在播放
+    _isPlay = false;
     
+    //初始化记时时间
+    _playTime = 0.0f;
+    
+    _isContactFlag = false;
+    
+    _isCreateEventFlag0 = false;
+    
+    _isCreateEventFlag1 = false;
+    
+    _isCreateEventFlag2 = false;
+    
+    _isCreateEventFlag3 = false;
     
     
     this->scheduleUpdate();
     
-    _isContactFlag = false;
+    
     
     return true;
 }
@@ -128,41 +131,247 @@ void HelloWorld::ButtonPress(Ref* pSender)
     this->removeChild(_pressLabel);
     
     
+    printf("开始了\n");
     
-    //1-精灵1的动作
-    //1.1-添加动作类:移动动作
-    auto actionMoveTo = MoveTo::create(4.0f, Vec2(_spriteButton1->getContentSize().width/2 + WIN_ORIGIN.x,WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - _spriteButton1->getContentSize().height/2));
-    
-    
-    //运行动作1
-    _spriteButton1->runAction(actionMoveTo);
-    
+    //更新正在播放
+    _isPlay = true;
     
 }
 
 //实现update方法
 //参数dt:上一次调用这个函数到本次调用这个函数之间间隔多少秒
+//时时刻刻都在调用这个方法进行界面帧的刷新
 void HelloWorld::update(float dt)
 {
-    //获取精灵1的坐标值
-    Vec2 sprite1Positin = _spriteButton1->getPosition();
     
-    //当长方的精灵恰好接触到了键盘之后了(只记录一次)
-    if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height + _spriteButton1->getContentSize().height/2)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - _spriteButton1->getContentSize().height/2)&&_isContactFlag == false)
+    
+    //如果已经开始播放了
+    //已经开始播放的情况下记时开始
+    if (_isPlay)
     {
-        printf("刚接触到了键盘,开始播放声音\n");
+        //printf("播放时间%f\n",_playTime);
         
-        _isContactFlag = true;
+        //传入时间作为参数点
+        if (_playTime >= 0.0f && _isCreateEventFlag0 == false)
+        {
+            //在此动态地根据时间来生成精灵，并存入精灵数组中
+            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
+            //精灵的长度由事件的持续时间来设置
+            //float spriteHeight = 0.15 * preDistance / preActionTime;
+            
+            //printf("0.15秒的长度是%f\n",spriteHeight);
+            
+            //1-生成
+            //精灵类Sprite->Node类->Ref类
+            auto spriteMove = Sprite::create("spriteButton.png");
+            //设置锚点(锚点下移)
+            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+            //位置坐标(锚点的坐标)
+            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+            spriteMove->setPosition(Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            
+            //设置颜色为红色
+            spriteMove->setColor(Color3B(255, 0, 0));
+            this->addChild(spriteMove, 0);
+            
+            
+            
+            //2-运动
+            //开始做运动
+            //数组中的动作(生成之后马上开始动作)
+            //1-移动动作(前戏移动)
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance));
+            
+            //2-入戏运动
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            
+            //3-顺序动作
+            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+            
+            //运行两个动作
+            spriteMove->runAction(sequenceMove);
+            
+            
+            //添加到数组中
+            _spriteArray[0] = spriteMove;
+            
+            
+            
+            _isCreateEventFlag0 = true;
+        }
+        if (_playTime >= 0.15f && _isCreateEventFlag1 == false)
+        {
+            //在此动态地根据时间来生成精灵，并存入精灵数组中
+            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
+            //精灵的长度由事件的持续时间来设置
+            //float spriteHeight = 0.15 * preDistance / preActionTime;
+            
+            //printf("0.15秒的长度是%f\n",spriteHeight);
+            
+            //1-生成
+            //精灵类Sprite->Node类->Ref类
+            auto spriteMove = Sprite::create("spriteButton.png");
+            //设置锚点(锚点下移)
+            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+            //位置坐标(锚点的坐标)
+            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+            spriteMove->setPosition(Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            
+            //设置颜色为红色
+            spriteMove->setColor(Color3B(255, 0, 0));
+            this->addChild(spriteMove, 0);
+            
+            
+            
+            //2-运动
+            //开始做运动
+            //数组中的动作(生成之后马上开始动作)
+            //1-移动动作(前戏移动)
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance));
+            
+            //2-入戏运动
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            
+            //3-顺序动作
+            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+            
+            //运行两个动作
+            spriteMove->runAction(sequenceMove);
+            
+            //添加到数组中
+            _spriteArray[1] = spriteMove;
+            
+            _isCreateEventFlag1 = true;
+        }
+        if (_playTime >= 0.30f && _isCreateEventFlag2 == false)
+        {
+            //在此动态地根据时间来生成精灵，并存入精灵数组中
+            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
+            //精灵的长度由事件的持续时间来设置
+            //float spriteHeight = 0.15 * preDistance / preActionTime;
+            
+            //printf("0.15秒的长度是%f\n",spriteHeight);
+            
+            //1-生成
+            //精灵类Sprite->Node类->Ref类
+            auto spriteMove = Sprite::create("spriteButton.png");
+            //设置锚点(锚点下移)
+            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+            //位置坐标(锚点的坐标)
+            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+            spriteMove->setPosition(Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            
+            //设置颜色为红色
+            spriteMove->setColor(Color3B(255, 0, 0));
+            this->addChild(spriteMove, 0);
+            
+            
+            
+            //2-运动
+            //开始做运动
+            //数组中的动作(生成之后马上开始动作)
+            //1-移动动作(前戏移动)
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, preDistance));
+            
+            //2-入戏运动
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            
+            //3-顺序动作
+            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+            
+            //运行两个动作
+            spriteMove->runAction(sequenceMove);
+            
+            //添加到数组中
+            _spriteArray[2] = spriteMove;
+            
+            _isCreateEventFlag2 = true;
+        }
+        if (_playTime >= 0.45f && _isCreateEventFlag3 == false)
+        {
+            //在此动态地根据时间来生成精灵，并存入精灵数组中
+            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
+            //精灵的长度由事件的持续时间来设置
+            //float spriteHeight = 0.15 * preDistance / preActionTime;
+            
+            //printf("0.15秒的长度是%f\n",spriteHeight);
+            
+            //1-生成
+            //精灵类Sprite->Node类->Ref类
+            auto spriteMove = Sprite::create("spriteButton.png");
+            //设置锚点(锚点下移)
+            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+            //位置坐标(锚点的坐标)
+            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+            spriteMove->setPosition(Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            
+            //设置颜色为红色
+            spriteMove->setColor(Color3B(255, 0, 0));
+            this->addChild(spriteMove, 0);
+            
+            
+            
+            //2-运动
+            //开始做运动
+            //数组中的动作(生成之后马上开始动作)
+            //1-移动动作(前戏移动)
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance));
+            
+            //2-入戏运动
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            
+            //3-顺序动作
+            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+            
+            //运行两个动作
+            spriteMove->runAction(sequenceMove);
+            
+            //添加到数组中
+            _spriteArray[3] = spriteMove;
+            
+            
+            _isCreateEventFlag3 = true;
+        }
+        
+        _playTime += dt;        
     }
-    //当播放结束时
-    else if ((sprite1Positin.y + _spriteButton1->getContentSize().height/2 <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&_isContactFlag == true)
+    
+    //遍历还在精灵数组中的精灵
+    for (int i = 0; i < 4; i++)
     {
-        printf("当前音符播放结束\n");
+        auto spriteMove = _spriteArray[i];
         
-        _isContactFlag = false;
-        
-        //将button从界面上移除
-        //this->removeChild(_spriteButton1);
+        //判断取出来的精灵是否有值
+        if (spriteMove != NULL)
+        {
+         
+            //获取精灵的坐标值
+            Vec2 sprite1Positin = spriteMove->getPosition();
+            
+            //当长方的精灵恰好接触到了键盘之后了(只记录一次)
+            if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - spriteMove->getContentSize().height)&&_isContactFlag == false)
+            {
+                printf("音符%d刚接触到了键盘,开始播放声音\n",i);
+                
+                _isContactFlag = true;
+            }
+            //当播放结束时
+            else if ((sprite1Positin.y + spriteMove->getContentSize().height<= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&_isContactFlag == true)
+            {
+                printf("当前音符%d播放结束\n",i);
+                
+                _isContactFlag = false;
+                
+                //播放结束
+                _isPlay = false;
+                
+                //将button从界面上移除
+                this->removeChild(spriteMove);
+                
+                _spriteArray[i] = NULL;
+            }
+            
+        }
     }
 }
 

@@ -13,6 +13,13 @@
 #define WIN_ORIGIN   Director::getInstance()->getVisibleOrigin()
 
 
+//设置前戏长度(固定不变)
+#define preDistance WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height
+
+//设置前戏时间(固定不变)
+#define preActionTime 5.0f
+
+
 class HelloWorld : public cocos2d::Layer
 {
 public:
@@ -35,12 +42,14 @@ public:
     
     
     
-    //精灵属性(指针)
-    cocos2d::Sprite *_spriteButton1;
-    
+    //长方形的下落白块精灵的数组(暂定为4）
+    cocos2d::Sprite *_spriteArray[4];
     
     //键盘精灵数组
     cocos2d::Sprite *_keySpriteArray[64];
+    
+    
+    
     
     //Label属性(指针)
     cocos2d::Label *_pressLabel;
@@ -54,6 +63,18 @@ public:
     
     //判断有没有正在播放当前的音符
     bool _isPlay;
+    
+    //播放记时
+    float _playTime;
+    
+    //用于记录当前的时间是否已经生成了事件
+    bool _isCreateEventFlag0;
+    
+    bool _isCreateEventFlag1;
+    
+    bool _isCreateEventFlag2;
+    
+    bool _isCreateEventFlag3;
     
 };
 
