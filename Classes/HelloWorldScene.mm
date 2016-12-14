@@ -1,12 +1,14 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-
-
+#include "RootViewController.h"
+#include "ChunkEvent.h"
 
 
 //声明cocos2d的命名空间
 //#define USING_NS_CC  using namespace cocos2d
 USING_NS_CC;
+
+//声明一个
 
 
 //创建场景
@@ -116,12 +118,6 @@ bool HelloWorld::init()
     
     _isCreateEventFlag0 = false;
     
-    _isCreateEventFlag1 = false;
-    
-    _isCreateEventFlag2 = false;
-    
-    _isCreateEventFlag3 = false;
-    
     
     this->scheduleUpdate();
     
@@ -143,6 +139,13 @@ void HelloWorld::ButtonPress(Ref* pSender)
     
     
     printf("开始了\n");
+    
+    RootViewController *rootVC = kRootViewController;
+    
+    [rootVC.playMusic PlayMIDIMultiTempMusic];
+    
+    
+    
     
     //更新正在播放
     _isPlay = true;
@@ -213,143 +216,11 @@ void HelloWorld::update(float dt)
             
             _isCreateEventFlag0 = true;
         }
-        if (_playTime >= 0.15f && _isCreateEventFlag1 == false)
-        {
-            //在此动态地根据时间来生成精灵，并存入精灵数组中
-            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
-            //精灵的长度由事件的持续时间来设置
-            //float spriteHeight = 0.15 * preDistance / preActionTime;
-            
-            //printf("0.15秒的长度是%f\n",spriteHeight);
-            
-            //1-生成
-            //精灵类Sprite->Node类->Ref类
-            auto spriteMove = Sprite::create("spriteButton.png");
-            //设置锚点(锚点下移)
-            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
-            //位置坐标(锚点的坐标)
-            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
-            
-            //设置颜色为红色
-            spriteMove->setColor(Color3B(255, 0, 0));
-            this->addChild(spriteMove, 0);
-            
-            
-            
-            //2-运动
-            //开始做运动
-            //数组中的动作(生成之后马上开始动作)
-            //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance));
-            
-            //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance - spriteMove->getContentSize().height));
-            
-            //3-顺序动作
-            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
-            
-            //运行两个动作
-            spriteMove->runAction(sequenceMove);
-            
-            //添加到数组中
-            _spriteArray[1] = spriteMove;
-            
-            _isCreateEventFlag1 = true;
-        }
-        if (_playTime >= 0.30f && _isCreateEventFlag2 == false)
-        {
-            //在此动态地根据时间来生成精灵，并存入精灵数组中
-            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
-            //精灵的长度由事件的持续时间来设置
-            //float spriteHeight = 0.15 * preDistance / preActionTime;
-            
-            //printf("0.15秒的长度是%f\n",spriteHeight);
-            
-            //1-生成
-            //精灵类Sprite->Node类->Ref类
-            auto spriteMove = Sprite::create("spriteButton.png");
-            //设置锚点(锚点下移)
-            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
-            //位置坐标(锚点的坐标)
-            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
-            
-            //设置颜色为红色
-            spriteMove->setColor(Color3B(255, 0, 0));
-            this->addChild(spriteMove, 0);
-            
-            
-            
-            //2-运动
-            //开始做运动
-            //数组中的动作(生成之后马上开始动作)
-            //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, preDistance));
-            
-            //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, preDistance - spriteMove->getContentSize().height));
-            
-            //3-顺序动作
-            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
-            
-            //运行两个动作
-            spriteMove->runAction(sequenceMove);
-            
-            //添加到数组中
-            _spriteArray[2] = spriteMove;
-            
-            _isCreateEventFlag2 = true;
-        }
-        if (_playTime >= 0.45f && _isCreateEventFlag3 == false)
-        {
-            //在此动态地根据时间来生成精灵，并存入精灵数组中
-            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
-            //精灵的长度由事件的持续时间来设置
-            //float spriteHeight = 0.15 * preDistance / preActionTime;
-            
-            //printf("0.15秒的长度是%f\n",spriteHeight);
-            
-            //1-生成
-            //精灵类Sprite->Node类->Ref类
-            auto spriteMove = Sprite::create("spriteButton.png");
-            //设置锚点(锚点下移)
-            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
-            //位置坐标(锚点的坐标)
-            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
-            
-            //设置颜色为红色
-            spriteMove->setColor(Color3B(255, 0, 0));
-            this->addChild(spriteMove, 0);
-            
-            
-            
-            //2-运动
-            //开始做运动
-            //数组中的动作(生成之后马上开始动作)
-            //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance));
-            
-            //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance - spriteMove->getContentSize().height));
-            
-            //3-顺序动作
-            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
-            
-            //运行两个动作
-            spriteMove->runAction(sequenceMove);
-            
-            //添加到数组中
-            _spriteArray[3] = spriteMove;
-            
-            
-            _isCreateEventFlag3 = true;
-        }
         
         _playTime += dt;        
     }
     
+    /*
     //遍历还在精灵数组中的精灵
     for (int i = 0; i < 4; i++)
     {
@@ -387,6 +258,7 @@ void HelloWorld::update(float dt)
             
         }
     }
+    */
 }
 
 void HelloWorld::ActionDone()

@@ -27,6 +27,7 @@
 //预处理2:事先处理一下MIDI中的所有8，9，和a事件(键盘按键事件)
 -(void)DealWithPressKeyEvent;
 
+-(void)DealWithPressKeyEvent2;
 
 //仅仅是播放
 -(void)PlayMIDIMultiTempMusic;
@@ -36,6 +37,8 @@
 @property (nonatomic,assign)BOOL play;
 
 
+//钢琴事件数组(随着不同的时间会不断地变化)
+@property (nonatomic,strong)NSMutableArray<ChunkEvent *> *tempEventArray;
 
 
 @end

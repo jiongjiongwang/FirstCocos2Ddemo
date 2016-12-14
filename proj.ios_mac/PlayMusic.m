@@ -119,16 +119,22 @@
     return _pressKeyArray;
 }
 
-
-
+//钢琴事件数组(随着不同的时间会不断地变化)
+-(NSMutableArray<ChunkEvent *> *)tempEventArray
+{
+    if (_tempEventArray == nil)
+    {
+        _tempEventArray = [NSMutableArray array];
+    }
+    
+    return _tempEventArray;
+}
 
 -(void)PlayMIDIMultiTempMusic
 {
-    
     _isPlay = NO;
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(TimeGo) userInfo:nil repeats:YES];
-    
 }
 
 -(void)TimeGo
@@ -316,6 +322,63 @@
 }
 
 //预加载2:事先处理一下MIDI中的所有8，9，和a事件(键盘按键事件)
+-(void)DealWithPressKeyEvent2
+{
+    //遍历所有的轨道
+    for (NSUInteger i = 0; i < _chunkHead.chunkNum; i++)
+    {
+        //2-每一个轨道的事件需要全部遍历
+        for (NSUInteger j = 0; j < self.mtrkArray[i].chunkEventArray.count; j++)
+        {
+             ChunkEvent *chunkEvent = self.mtrkArray[i].chunkEventArray[j];
+            
+            NSString *firstStatus = [chunkEvent.eventStatus substringToIndex:1];
+            
+            if ([firstStatus isEqualToString:@"8"])
+            {
+                
+                //遍历pressKeyArray数组
+                for (ChunkEvent *event in self.pressKeyArray)
+                {
+                    //当音符相同时
+                    if ([chunkEvent.midiCode isEqualToString:event.midiCode])
+                    {
+                        
+                        //1-得出按下钢琴到释放的持续时间
+                        float durationTime = chunkEvent.eventPlayTime - event.eventPlayTime;
+                        
+                        //2-更新9事件的持续时间
+                        event.eventDuration = durationTime;
+                        
+                        
+                        //3-将9事件从数组中移除
+                        [self.pressKeyArray removeObject:event];
+                        
+                        //4-跳出当期的循环
+                        break;
+                    }
+                }
+                
+            }
+            else if ([firstStatus isEqualToString:@"9"])
+            {
+                
+                //1-将当前的按下键盘事件(9事件)存放到数组中
+                [self.pressKeyArray addObject:chunkEvent];
+                
+            }
+            else if ([firstStatus isEqualToString:@"a"])
+            {
+                NSLog(@"%@触摸键盘以后%@,速度是%@,所在位置是%ld,当前事件的开始播放时间是%f",chunkEvent.eventStatus,chunkEvent.midiCode,chunkEvent.midiSpeed,chunkEvent.location,chunkEvent.eventPlayTime);
+            }
+            
+        }
+    }
+    
+    NSLog(@"预处理键盘事件完毕");    
+}
+
+
 -(void)DealWithPressKeyEvent
 {
     
@@ -419,15 +482,45 @@
             //得出9事件的持续时间
             if ([firstStatus isEqualToString:@"9"])
             {
-                /*
-                NSLog(@"%@按下键盘%@,速度是%@,所在位置是%ld,当前事件的开始播放时间是%f,按下钢琴事件的持续时间是%f",obj.eventStatus,obj.midiCode,obj.midiSpeed,obj.location,obj.eventPlayTime,obj.eventDuration);
-                */
-                NSLog(@"%f秒开始了按下键盘%@,持续时长为%f",obj.eventPlayTime,obj.midiCode,obj.eventDuration);
+                NSLog(@"%f秒生成了按键%@,持续时长为%f",obj.eventPlayTime,obj.midiCode,obj.eventDuration);
+                //0-判断钢琴事件数组中是否有事件数据
+                if (self.tempEventArray.count > 0)
+                {
+                    //1-取出数组中的第一个数据事件的播放时间
+                    float playTime = self.tempEventArray[0].eventPlayTime;
+                    
+                    //2-判断取出的播放时间与当前的事件时间是否一致
+                    if (playTime == obj.eventPlayTime)
+                    {
+                        //将当前的事件放入数组中
+                        //在原有的基础上添加数据
+                        [self.tempEventArray addObject:obj];
+                    }
+                    else
+                    {
+                        //清空数组后将事件放入数组中
+                        [self.tempEventArray removeAllObjects];
+                        
+                        //新的数据加入到了数组中
+                        [self.tempEventArray addObject:obj];
+                    }
+                    
+                }
+                else
+                {
+                    //添加第一个数据进去
+                    //新的数据加入到了数组中
+                    [self.tempEventArray addObject:obj];
+                }
                 
             }
             
+            
+            
 #warning 接受到外界的播放信息之后再播放
-            [self PlaySoundWithChunkEvent:obj];
+            //[self PlaySoundWithChunkEvent:obj];
+            
+            
         }
     }];
 }

@@ -40,10 +40,7 @@
 - (void)loadView
 {
     
-    //[super loadView];
-    
-
-    NSLog(@"在loadView中加载cocos2d的基本信息设置");
+    [super loadView];
     
     cocos2d::Application *app = cocos2d::Application::getInstance();
     
@@ -81,8 +78,6 @@
     //run the cocos2d-x game scene
     app->run();
     
-    
-    
 }
 
 
@@ -93,22 +88,19 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"viewDidLoad");
-    
     //轨道头初始化
     _chunkHead = [ChunkHeader sharedChunkHeaderFrom:kFilePath];
     
+    
+    //处理playMusic播放类
     _playMusic = [PlayMusic PlayMusicWithChunkHead:_chunkHead
                                     andff5103Array:self.ff5103Array andMTRKArray:self.mtrkArray andMidiAllTime:self.midiAllTime andMidiData:self.midiData];
     //预处理事件1
     [_playMusic CaculateTheEventTime];
     
     //预处理事件2
-    [_playMusic DealWithPressKeyEvent];
+    [_playMusic DealWithPressKeyEvent2];
     
-    
-
-    //播放音乐
     //[_playMusic PlayMIDIMultiTempMusic];
     
 }

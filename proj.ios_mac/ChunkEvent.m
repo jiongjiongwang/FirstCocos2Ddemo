@@ -99,6 +99,7 @@
         return;
     }
     
+    
     [midiData enumerateByteRangesUsingBlock:^(const void * _Nonnull bytes, NSRange byteRange, BOOL * _Nonnull stop) {
        
         //如果是缺失事件

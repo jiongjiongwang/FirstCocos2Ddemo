@@ -5,10 +5,12 @@
 
 @interface RootViewController : UIViewController
 {
-
-    PlayMusic *_playMusic;
     
 }
+
+@property (nonatomic,strong)PlayMusic *playMusic;
+
+
 - (BOOL) prefersStatusBarHidden;
 
 @end
