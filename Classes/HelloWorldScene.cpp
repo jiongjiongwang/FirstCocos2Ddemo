@@ -1,6 +1,9 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
+
+
+
 //声明cocos2d的命名空间
 //#define USING_NS_CC  using namespace cocos2d
 USING_NS_CC;
@@ -76,13 +79,21 @@ bool HelloWorld::init()
     
     //2-先生成底部的静止的键盘精灵，在生成上面的运动的长方形精灵
     
+    
+    
+    
     //循环添加底部的键盘
     for (int i = 0; i < 63; i++)
     {
         auto sp = Sprite::create("Mid.png");
         sp->setAnchorPoint(Vec2(0.0f,1.0f));
+        
+        
+        //键盘整体左移25个键盘位
+        float deltaDistance  = sp->getContentSize().width * deltaKeyNum;
+        
         sp->setPosition(Vec2(sp->getContentSize().width * i
-                             + WIN_ORIGIN.x,WIN_ORIGIN.y + sp->getContentSize().height));
+                             + WIN_ORIGIN.x - deltaDistance,WIN_ORIGIN.y + sp->getContentSize().height));
         sp->setVisible(true);
         this->addChild(sp,0);
         
@@ -168,7 +179,10 @@ void HelloWorld::update(float dt)
             spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
             //位置坐标(锚点的坐标)
             //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            spriteMove->setPosition(Vec2(_keySpriteArray[28]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[28]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            
+            
+            
             
             //设置颜色为红色
             spriteMove->setColor(Color3B(255, 0, 0));
@@ -180,10 +194,10 @@ void HelloWorld::update(float dt)
             //开始做运动
             //数组中的动作(生成之后马上开始动作)
             //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance));
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[28]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[28]->getPosition().x, preDistance));
             
             //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[28]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[28]->getPosition().x, preDistance - spriteMove->getContentSize().height));
             
             //3-顺序动作
             auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
@@ -215,7 +229,7 @@ void HelloWorld::update(float dt)
             spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
             //位置坐标(锚点的坐标)
             //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            spriteMove->setPosition(Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
             
             //设置颜色为红色
             spriteMove->setColor(Color3B(255, 0, 0));
@@ -227,10 +241,10 @@ void HelloWorld::update(float dt)
             //开始做运动
             //数组中的动作(生成之后马上开始动作)
             //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance));
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance));
             
             //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance - spriteMove->getContentSize().height));
             
             //3-顺序动作
             auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
@@ -259,7 +273,7 @@ void HelloWorld::update(float dt)
             spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
             //位置坐标(锚点的坐标)
             //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            spriteMove->setPosition(Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
             
             //设置颜色为红色
             spriteMove->setColor(Color3B(255, 0, 0));
@@ -271,10 +285,10 @@ void HelloWorld::update(float dt)
             //开始做运动
             //数组中的动作(生成之后马上开始动作)
             //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, preDistance));
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, preDistance));
             
             //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[0]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[0]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[25]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[25]->getPosition().x, preDistance - spriteMove->getContentSize().height));
             
             //3-顺序动作
             auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
@@ -303,7 +317,7 @@ void HelloWorld::update(float dt)
             spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
             //位置坐标(锚点的坐标)
             //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+            spriteMove->setPosition(Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
             
             //设置颜色为红色
             spriteMove->setColor(Color3B(255, 0, 0));
@@ -315,10 +329,10 @@ void HelloWorld::update(float dt)
             //开始做运动
             //数组中的动作(生成之后马上开始动作)
             //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance));
+            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance));
             
             //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[1]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[1]->getPosition().x, preDistance - spriteMove->getContentSize().height));
+            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[26]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[26]->getPosition().x, preDistance - spriteMove->getContentSize().height));
             
             //3-顺序动作
             auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);

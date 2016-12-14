@@ -74,6 +74,15 @@
 		FE3CBBC01DF90B41007E6300 /* button_gray_disable.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */; };
 		FE3CBBC11DF90B41007E6300 /* button_gray_press.9.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */; };
 		FE3CBBC71DF94F91007E6300 /* Mid.png in Resources */ = {isa = PBXBuildFile; fileRef = FE3CBBC41DF94F91007E6300 /* Mid.png */; };
+		FE4613031E00E3DA0075EA06 /* MIDISampler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613021E00E3DA0075EA06 /* MIDISampler.m */; };
+		FE4613071E00E6EB0075EA06 /* ChunkHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613051E00E6EB0075EA06 /* ChunkHeader.m */; };
+		FE4613091E00E8410075EA06 /* GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = FE4613081E00E8410075EA06 /* GS.sf2 */; };
+		FE46130A1E00E8410075EA06 /* GS.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = FE4613081E00E8410075EA06 /* GS.sf2 */; };
+		FE4613101E00E93E0075EA06 /* ChunkEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FE46130D1E00E93E0075EA06 /* ChunkEvent.m */; };
+		FE4613111E00E93E0075EA06 /* FF5103ChunkEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FE46130F1E00E93E0075EA06 /* FF5103ChunkEvent.m */; };
+		FE4613141E00E9AC0075EA06 /* MTRKChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613121E00E9AC0075EA06 /* MTRKChunk.m */; };
+		FE4613181E00EA080075EA06 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613171E00EA080075EA06 /* NSArray+Log.m */; };
+		FE46131C1E00EF6A0075EA06 /* PlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = FE46131B1E00EF6A0075EA06 /* PlayMusic.m */; };
 		FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */; };
 /* End PBXBuildFile section */
 
@@ -181,6 +190,21 @@
 		FE3CBBBD1DF90B41007E6300 /* button_gray_disable.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_disable.9.png; sourceTree = "<group>"; };
 		FE3CBBBE1DF90B41007E6300 /* button_gray_press.9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gray_press.9.png; sourceTree = "<group>"; };
 		FE3CBBC41DF94F91007E6300 /* Mid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mid.png; sourceTree = "<group>"; };
+		FE4613011E00E3DA0075EA06 /* MIDISampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDISampler.h; sourceTree = SOURCE_ROOT; };
+		FE4613021E00E3DA0075EA06 /* MIDISampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MIDISampler.m; sourceTree = SOURCE_ROOT; };
+		FE4613051E00E6EB0075EA06 /* ChunkHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChunkHeader.m; sourceTree = SOURCE_ROOT; };
+		FE4613061E00E6EB0075EA06 /* ChunkHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkHeader.h; sourceTree = SOURCE_ROOT; };
+		FE4613081E00E8410075EA06 /* GS.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = GS.sf2; sourceTree = SOURCE_ROOT; };
+		FE46130C1E00E93E0075EA06 /* FF5103ChunkEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FF5103ChunkEvent.h; sourceTree = SOURCE_ROOT; };
+		FE46130D1E00E93E0075EA06 /* ChunkEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChunkEvent.m; sourceTree = SOURCE_ROOT; };
+		FE46130E1E00E93E0075EA06 /* ChunkEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChunkEvent.h; sourceTree = SOURCE_ROOT; };
+		FE46130F1E00E93E0075EA06 /* FF5103ChunkEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FF5103ChunkEvent.m; sourceTree = SOURCE_ROOT; };
+		FE4613121E00E9AC0075EA06 /* MTRKChunk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTRKChunk.m; sourceTree = SOURCE_ROOT; };
+		FE4613131E00E9AC0075EA06 /* MTRKChunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTRKChunk.h; sourceTree = SOURCE_ROOT; };
+		FE4613161E00EA080075EA06 /* NSArray+Log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Log.h"; sourceTree = SOURCE_ROOT; };
+		FE4613171E00EA080075EA06 /* NSArray+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = SOURCE_ROOT; };
+		FE46131A1E00EF6A0075EA06 /* PlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayMusic.h; sourceTree = SOURCE_ROOT; };
+		FE46131B1E00EF6A0075EA06 /* PlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayMusic.m; sourceTree = SOURCE_ROOT; };
 		FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spriteButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -231,6 +255,11 @@
 		080E96DDFE201D6D7F000001 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				FE4613191E00EF5A0075EA06 /* Play */,
+				FE4613151E00E9D60075EA06 /* Tools */,
+				FE46130B1E00E8E50075EA06 /* Event */,
+				FE4613041E00E6D40075EA06 /* Chunk */,
+				FE4612FF1E00E38D0075EA06 /* Library */,
 				5087E77117EB970100C73F5D /* Icons */,
 				503AE0FA17EB989F00D1A890 /* AppController.h */,
 				503AE0FB17EB989F00D1A890 /* AppController.mm */,
@@ -380,6 +409,56 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		FE4612FF1E00E38D0075EA06 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				FE4613081E00E8410075EA06 /* GS.sf2 */,
+				FE4613011E00E3DA0075EA06 /* MIDISampler.h */,
+				FE4613021E00E3DA0075EA06 /* MIDISampler.m */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		FE4613041E00E6D40075EA06 /* Chunk */ = {
+			isa = PBXGroup;
+			children = (
+				FE4613121E00E9AC0075EA06 /* MTRKChunk.m */,
+				FE4613131E00E9AC0075EA06 /* MTRKChunk.h */,
+				FE4613051E00E6EB0075EA06 /* ChunkHeader.m */,
+				FE4613061E00E6EB0075EA06 /* ChunkHeader.h */,
+			);
+			name = Chunk;
+			sourceTree = "<group>";
+		};
+		FE46130B1E00E8E50075EA06 /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				FE46130C1E00E93E0075EA06 /* FF5103ChunkEvent.h */,
+				FE46130D1E00E93E0075EA06 /* ChunkEvent.m */,
+				FE46130E1E00E93E0075EA06 /* ChunkEvent.h */,
+				FE46130F1E00E93E0075EA06 /* FF5103ChunkEvent.m */,
+			);
+			name = Event;
+			sourceTree = "<group>";
+		};
+		FE4613151E00E9D60075EA06 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				FE4613161E00EA080075EA06 /* NSArray+Log.h */,
+				FE4613171E00EA080075EA06 /* NSArray+Log.m */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		FE4613191E00EF5A0075EA06 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				FE46131A1E00EF6A0075EA06 /* PlayMusic.h */,
+				FE46131B1E00EF6A0075EA06 /* PlayMusic.m */,
+			);
+			name = Play;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -484,6 +563,7 @@
 			files = (
 				FE3CBBBF1DF90B41007E6300 /* button_gray_normal.9.png in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
+				FE4613091E00E8410075EA06 /* GS.sf2 in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
@@ -523,6 +603,7 @@
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				46880B7C19C43A67006E1F66 /* CloseNormal.png in Resources */,
 				46880B7E19C43A67006E1F66 /* CloseSelected.png in Resources */,
+				FE46130A1E00E8410075EA06 /* GS.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,9 +615,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				FE46131C1E00EF6A0075EA06 /* PlayMusic.m in Sources */,
+				FE4613141E00E9AC0075EA06 /* MTRKChunk.m in Sources */,
 				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
+				FE4613101E00E93E0075EA06 /* ChunkEvent.m in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				FE4613031E00E3DA0075EA06 /* MIDISampler.m in Sources */,
+				FE4613181E00EA080075EA06 /* NSArray+Log.m in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				FE4613071E00E6EB0075EA06 /* ChunkHeader.m in Sources */,
+				FE4613111E00E93E0075EA06 /* FF5103ChunkEvent.m in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

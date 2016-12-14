@@ -5,6 +5,9 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
+
+#define kFilePath "/Users/dn210/Desktop/tu er qi jin xing qu.mid"
+
 #endif
 
 #ifdef __cplusplus

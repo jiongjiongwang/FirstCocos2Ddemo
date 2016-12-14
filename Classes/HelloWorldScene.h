@@ -19,6 +19,8 @@
 //设置前戏时间(固定不变)
 #define preActionTime 5.0f
 
+//左移的键盘数目
+#define deltaKeyNum 25
 
 class HelloWorld : public cocos2d::Layer
 {
