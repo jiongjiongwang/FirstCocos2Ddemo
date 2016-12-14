@@ -72,6 +72,8 @@ public:
     //用于记录当前的时间是否已经生成了事件
     bool _isCreateEventFlag0;
     
+    
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__

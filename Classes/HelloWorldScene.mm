@@ -4,11 +4,16 @@
 #include "ChunkEvent.h"
 
 
+
+
 //声明cocos2d的命名空间
 //#define USING_NS_CC  using namespace cocos2d
 USING_NS_CC;
 
-//声明一个
+
+
+NSMutableArray<ChunkEvent *> *tempEventArray;
+
 
 
 //创建场景
@@ -41,7 +46,7 @@ bool HelloWorld::init()
         return false;
     }
     
-    
+    tempEventArray = [NSMutableArray array];
     
 
     //添加关闭按钮到菜单层上
@@ -122,7 +127,7 @@ bool HelloWorld::init()
     this->scheduleUpdate();
     
     
-    
+
     return true;
 }
 
@@ -163,7 +168,13 @@ void HelloWorld::update(float dt)
     //已经开始播放的情况下记时开始
     if (_isPlay)
     {
-        //printf("播放时间%f\n",_playTime);
+        
+        printf("播放时间%f\n",_playTime);
+        
+        
+        NSLog(@"%ld",tempEventArray.count);
+
+        
         
         //传入时间作为参数点
         if (_playTime >= 0.0f && _isCreateEventFlag0 == false)
