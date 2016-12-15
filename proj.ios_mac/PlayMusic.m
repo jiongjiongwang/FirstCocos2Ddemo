@@ -137,6 +137,25 @@
     _timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(TimeGo) userInfo:nil repeats:YES];
 }
 
+//For cocos2d方面的播放(先返回钢琴事件数组，再播放)
+-(NSMutableArray<ChunkEvent *> *)PlayForGameWithStartTime:(float)startTime andEndTime:(float)endTime
+{
+    if (endTime > self.midiAllTime)
+    {
+        NSLog(@"播放结束");
+        
+        return nil;
+    }
+    
+    //用一个临时的可变数组来保存当前的事件
+    NSMutableArray<ChunkEvent *> *mEventArray = [NSMutableArray array];
+    
+    //传入一个范围，返回一个钢琴事件的数组
+    mEventArray = [self GetPianoEventArrayWithTime:startTime andendTime:endTime andIndexArray:self.chunkIndexArray];
+     
+    return mEventArray;
+}
+
 -(void)TimeGo
 {
     
@@ -275,8 +294,55 @@
     
 }
 
-
-
+//封装一个方法:传入一个范围，返回一个钢琴事件数组
+-(NSMutableArray<ChunkEvent *> *)GetPianoEventArrayWithTime:(float)startTime andendTime:(float)endTime andIndexArray:(NSMutableArray *)chunkIndex
+{
+    //用一个临时的可变数组来保存当前的事件
+    NSMutableArray<ChunkEvent *> *mEventArray = [NSMutableArray array];
+    
+    
+    //1-轨道要全部遍历结束
+    for (NSUInteger i = 0; i < _chunkHead.chunkNum; i++)
+    {
+        
+        //根据传入的lowTime设置不同的终点
+        NSUInteger endIndex;
+        
+        endIndex = self.mtrkArray[i].chunkEventArray.count;
+        
+        //2-每一个轨道的事件不需要全部遍历
+        for (NSUInteger j = [chunkIndex[i] integerValue]; j < endIndex; j++)
+        {
+            ChunkEvent *chunkEvent = self.mtrkArray[i].chunkEventArray[j];
+            
+            if (chunkEvent.eventPlayTime >= startTime && chunkEvent.eventPlayTime < endTime)
+            {
+                
+                //取出chunkEvent中所有的9事件
+                if (chunkEvent.eventStatus.length <= 2)
+                {
+                    NSString *firstStatus = [chunkEvent.eventStatus substringToIndex:1];
+                    
+                    //得出9事件的持续时间
+                    if ([firstStatus isEqualToString:@"9"])
+                    {
+                        [mEventArray addObject:chunkEvent];
+                    }
+                }
+                chunkIndex[i] = @(j);
+            }
+            else if(chunkEvent.eventPlayTime >= endTime)
+            {
+                chunkIndex[i] = @(j);
+                
+                break;
+            }
+            
+        }
+    }
+    
+    return mEventArray;
+}
 
 //封装一个方法:传入一个范围，返回一个数组
 -(NSMutableArray<ChunkEvent *> *)GetEventArrayWithTime:(float)startTime andendTime:(float)endTime andIndexArray:(NSMutableArray *)chunkIndex
@@ -320,6 +386,73 @@
     
     return mEventArray;
 }
+
+//仅仅是放
+//封装一个方法:播放数组事件
+-(void)PlaySoundWithArray:(NSMutableArray<ChunkEvent *> *)eventArray
+{
+    [eventArray enumerateObjectsUsingBlock:^(ChunkEvent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        //播放音乐的核心代码
+        //播放音乐(一个事件一个事件地播放音乐)
+        //不播放FF和F0开头事件的音乐
+        if (obj.eventStatus.length <= 2)
+        {
+            
+            NSString *firstStatus = [obj.eventStatus substringToIndex:1];
+            
+            //得出9事件的持续时间
+            if ([firstStatus isEqualToString:@"9"])
+            {
+                //NSLog(@"%f秒生成了按键%@,持续时长为%f",obj.eventPlayTime,obj.midiCode,obj.eventDuration);
+                
+                
+                //0-判断钢琴事件数组中是否有事件数据
+                if (self.tempEventArray.count > 0)
+                {
+                    //1-取出数组中的第一个数据事件的播放时间
+                    float playTime = self.tempEventArray[0].eventPlayTime;
+                    
+                    //2-判断取出的播放时间与当前的事件时间是否一致
+                    if (playTime == obj.eventPlayTime)
+                    {
+                        //将当前的事件放入数组中
+                        //在原有的基础上添加数据
+                        [self.tempEventArray addObject:obj];
+                    }
+                    else
+                    {
+                        //清空数组后将事件放入数组中
+                        [self.tempEventArray removeAllObjects];
+                        
+                        //新的数据加入到了数组中
+                        [self.tempEventArray addObject:obj];
+                    }
+                    
+                }
+                else
+                {
+                    //添加第一个数据进去
+                    //新的数据加入到了数组中
+                    [self.tempEventArray addObject:obj];
+                }
+            }
+        }
+        
+        //当当前时间的数组遍历完成之后，当前时间的钢琴琴键数组一定完成了
+        if (idx == eventArray.count - 1 && self.tempEventArray.count > 0)
+        {
+            //NSLog(@"当前时间%f的数组大小为=%ld",self.tempEventArray[0].eventPlayTime,self.tempEventArray.count);
+        }
+        
+#warning 接受到外界的播放信息之后再播放
+        
+    }];
+    
+    //排查完毕后清空数组
+    [self.tempEventArray removeAllObjects];
+}
+
+
 
 //预加载2:事先处理一下MIDI中的所有8，9，和a事件(键盘按键事件)
 -(void)DealWithPressKeyEvent2
@@ -463,73 +596,9 @@
     
     NSLog(@"预处理键盘事件完毕");
     
-    //NSLog(@"最小的持续时间是%f",minDurationTime);
+    NSLog(@"最小的持续时间是%f",minDurationTime);
 }
 
-//仅仅是放
-//封装一个方法:播放数组事件
--(void)PlaySoundWithArray:(NSMutableArray<ChunkEvent *> *)eventArray
-{
-    [eventArray enumerateObjectsUsingBlock:^(ChunkEvent * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        //播放音乐的核心代码
-        //播放音乐(一个事件一个事件地播放音乐)
-        //不播放FF和F0开头事件的音乐
-        if (obj.eventStatus.length <= 2)
-        {
-            
-            NSString *firstStatus = [obj.eventStatus substringToIndex:1];
-            
-            //得出9事件的持续时间
-            if ([firstStatus isEqualToString:@"9"])
-            {
-                //NSLog(@"%f秒生成了按键%@,持续时长为%f",obj.eventPlayTime,obj.midiCode,obj.eventDuration);
-                
-                
-                //0-判断钢琴事件数组中是否有事件数据
-                if (self.tempEventArray.count > 0)
-                {
-                    //1-取出数组中的第一个数据事件的播放时间
-                    float playTime = self.tempEventArray[0].eventPlayTime;
-                    
-                    //2-判断取出的播放时间与当前的事件时间是否一致
-                    if (playTime == obj.eventPlayTime)
-                    {
-                        //将当前的事件放入数组中
-                        //在原有的基础上添加数据
-                        [self.tempEventArray addObject:obj];
-                    }
-                    else
-                    {
-                        //清空数组后将事件放入数组中
-                        [self.tempEventArray removeAllObjects];
-                        
-                        //新的数据加入到了数组中
-                        [self.tempEventArray addObject:obj];
-                    }
-                    
-                }
-                else
-                {
-                    //添加第一个数据进去
-                    //新的数据加入到了数组中
-                    [self.tempEventArray addObject:obj];
-                }
-            }
-        }
-        
-        //当当前时间的数组遍历完成之后，当前时间的钢琴琴键数组一定完成了
-        if (idx == eventArray.count - 1 && self.tempEventArray.count > 0)
-        {
-            NSLog(@"当前时间%f的数组大小为=%ld",self.tempEventArray[0].eventPlayTime,self.tempEventArray.count);
-        }
-        
-#warning 接受到外界的播放信息之后再播放
-        
-    }];
-    
-    //排查完毕后清空数组
-     [self.tempEventArray removeAllObjects];
-}
 
 
 //封装播放音乐的方法(传入一个事件)

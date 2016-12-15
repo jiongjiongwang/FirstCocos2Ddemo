@@ -99,7 +99,7 @@
     [_playMusic CaculateTheEventTime];
     
     //预处理事件2
-    [_playMusic DealWithPressKeyEvent2];
+    [_playMusic DealWithPressKeyEvent];
     
     //[_playMusic PlayMIDIMultiTempMusic];
     

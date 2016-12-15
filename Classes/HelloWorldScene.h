@@ -14,10 +14,13 @@
 
 
 //设置前戏长度(固定不变)
-#define preDistance WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height
+#define preDistance (WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)
+
+
+
 
 //设置前戏时间(固定不变)
-#define preActionTime 5.0f
+#define preActionTime 3.0f
 
 //左移的键盘数目
 #define deltaKeyNum 25
@@ -37,6 +40,8 @@ public:
     void ButtonPress(Ref* pSender);
     
     void ActionDone();
+    
+    
     
     
     // implement the "static create()" method manually
@@ -68,11 +73,6 @@ public:
     
     //播放记时
     float _playTime;
-    
-    //用于记录当前的时间是否已经生成了事件
-    bool _isCreateEventFlag0;
-    
-    
 
 };
 
