@@ -230,14 +230,22 @@ void HelloWorld::update(float dt)
                     spriteMove->runAction(sequenceMove);
                     
                     
-                    //添加到数组中
-                    //_spriteArray[0] = spriteMove;
+                    if (_playTime == 0)
+                    {
+                        //添加到数组中(伪)
+                        _spriteArray[0] = spriteMove;
+                    }
+                    
+                    
                 }
             }
         }
         else if (pianoEventArray == nil)
         {
             printf("播放结束\n");
+            
+            //停止播放
+            _isPlay = false;
         }
         
         
@@ -245,13 +253,13 @@ void HelloWorld::update(float dt)
         
     }
     
-    /*
+    
     //遍历还在精灵数组中的精灵
     for (int i = 0; i < 4; i++)
     {
         auto spriteMove = _spriteArray[i];
         
-        //判断取出来的精灵是否有值
+        //判断取出来的精灵是否有值(判断精灵数组是否为空)
         if (spriteMove != NULL)
         {
          
@@ -273,7 +281,7 @@ void HelloWorld::update(float dt)
                 _isContactFlag = false;
                 
                 //播放结束
-                _isPlay = false;
+                //_isPlay = false;
                 
                 //将button从界面上移除
                 this->removeChild(spriteMove);
@@ -283,7 +291,7 @@ void HelloWorld::update(float dt)
             
         }
     }
-    */ 
+
 }
 
 //封装一个方法:根据传入的音符号(NSString)来返回键盘编号(int)

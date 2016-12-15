@@ -52,6 +52,9 @@ public:
     //长方形的下落白块精灵的数组(暂定为4）
     cocos2d::Sprite *_spriteArray[4];
     
+    //长方形的下落白块精灵的数组(数组大小不确定)
+    cocos2d::Sprite **_allSpriteArray;
+    
     //键盘精灵数组
     cocos2d::Sprite *_keySpriteArray[64];
     

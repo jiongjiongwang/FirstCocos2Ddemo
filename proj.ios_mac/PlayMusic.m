@@ -398,6 +398,8 @@
         if (obj.eventStatus.length <= 2)
         {
             
+            
+            /*
             NSString *firstStatus = [obj.eventStatus substringToIndex:1];
             
             //得出9事件的持续时间
@@ -436,20 +438,28 @@
                     [self.tempEventArray addObject:obj];
                 }
             }
+            */
+            
+            [self PlaySoundWithChunkEvent:obj];
         }
         
+        /*
         //当当前时间的数组遍历完成之后，当前时间的钢琴琴键数组一定完成了
         if (idx == eventArray.count - 1 && self.tempEventArray.count > 0)
         {
             //NSLog(@"当前时间%f的数组大小为=%ld",self.tempEventArray[0].eventPlayTime,self.tempEventArray.count);
         }
+        */
+
         
-#warning 接受到外界的播放信息之后再播放
+        
+        
+        
         
     }];
     
     //排查完毕后清空数组
-    [self.tempEventArray removeAllObjects];
+    //[self.tempEventArray removeAllObjects];
 }
 
 
