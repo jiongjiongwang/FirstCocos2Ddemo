@@ -272,7 +272,7 @@ void HelloWorld::update(float dt)
         }
         else if (pianoEventArray == nil)
         {
-            printf("播放结束\n");
+            printf("不再生成新的事件了\n");
             
             //停止播放
             _isPlay = false;
@@ -287,8 +287,11 @@ void HelloWorld::update(float dt)
     //遍历还在精灵容器内的精灵
     size_t len = m_vecSprite.size();
     
+    
     //声明一个声音可变数组的copy
     NSArray *mEventArrayCopy = tempEventArray.copy;
+    
+    
     
     
     for (size_t i =0; i < len; i ++)
@@ -297,7 +300,7 @@ void HelloWorld::update(float dt)
         auto spriteMove = m_vecSprite[i];
         
         //判断取出来的精灵是否有值(判断精灵数组是否为空)
-        if (spriteMove != NULL)
+        if (spriteMove != NULL && mEventArrayCopy.count > 0)
         {
             //获取精灵的坐标值
             Vec2 sprite1Positin = spriteMove->getPosition();
