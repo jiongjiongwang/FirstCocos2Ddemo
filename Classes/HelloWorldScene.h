@@ -13,7 +13,7 @@
 #define WIN_ORIGIN   Director::getInstance()->getVisibleOrigin()
 
 
-//设置前戏长度(固定不变)
+
 #define preDistance (WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)
 
 
@@ -27,6 +27,10 @@
 
 class HelloWorld : public cocos2d::Layer
 {
+    
+    
+    
+    
 public:
     
     
@@ -52,8 +56,11 @@ public:
     //长方形的下落白块精灵的数组(暂定为4）
     cocos2d::Sprite *_spriteArray[4];
     
-    //长方形的下落白块精灵的数组(数组大小不确定)
-    cocos2d::Sprite **_allSpriteArray;
+
+    //精灵容器(用于存放精灵)
+    std::vector<cocos2d::Sprite *> m_vecSprite;
+    
+    
     
     //键盘精灵数组
     cocos2d::Sprite *_keySpriteArray[64];
@@ -76,6 +83,9 @@ public:
     
     //播放记时
     float _playTime;
+    
+
+    
 
 };
 

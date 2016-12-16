@@ -52,8 +52,8 @@
 //11-钢琴从按下去到释放的持续时间(只统计9开头的事件)
 @property (nonatomic,assign)float eventDuration;
 
-//12-钢琴的琴键是否生成(只统计9开头的事件)
-@property (nonatomic,assign)BOOL isCreate;
+//12-钢琴的琴键是否已经播放(只统计9开头的事件)
+@property (nonatomic,assign)BOOL isHasPlay;
 
 
 //初始化方法:传入事件的1-delta-time位数，2-事件的状态码，3-事件总长度和4-总的data,5当前轨道块在总data中的位置

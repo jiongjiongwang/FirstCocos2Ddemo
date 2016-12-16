@@ -31,6 +31,10 @@
         //判断当前的事件是不是缺失事件
         _isUnFormal = isUnFormal;
         
+        //初始化当前的音符还没有播放
+        _isHasPlay = NO;
+        
+        
         //根据以上的外界属性来得出事件的delta-time
         _eventDeltaTime = [self GetDeltaTimeWithMidiData:midiData andDeltaNum:deltaNum andEventLocation:location];
         
