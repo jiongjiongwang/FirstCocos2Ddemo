@@ -73,12 +73,33 @@ bool HelloWorld::init()
     auto labelPress = MenuItemLabel::create(_pressLabel, CC_CALLBACK_1(HelloWorld::ButtonPress, this));
     
     labelPress->setPosition(Vec2(WIN_SIZE.width/2 + WIN_ORIGIN.x, WIN_SIZE.height/2 + WIN_ORIGIN.y));
-
+    
+    
+    //添加stop停止按钮
+    _pressPauseLabel = Label::createWithTTF("Pause", "fonts/Marker Felt.ttf",25);
+    
+    //初始时不显示暂停label
+    _pressPauseLabel->setOpacity(0);
+    
+    
+    //利用labelStop对象生成MenuItemLabel类对象
+    //MenuItemLabel类->MenuItem类->Node类->Ref类
+    auto labelPausePress = MenuItemLabel::create(_pressPauseLabel, CC_CALLBACK_1(HelloWorld::ButtonPausePress, this));
+    
+    //设置锚点
+    labelPausePress->setAnchorPoint(Vec2(0.5f,1.0f));
+    
+    
+    
+    
+    labelPausePress->setPosition(Vec2(WIN_SIZE.width/2 + WIN_ORIGIN.x, WIN_SIZE.height + WIN_ORIGIN.y));
+    
+    
     
     //3-Menu类:负责管理场景上的UI控件
     //Menu类->Layer类->Node类->Ref类
     //auto menu = Menu::create(closeItem,labelPress, NULL);
-    auto menu = Menu::create(labelPress, NULL);
+    auto menu = Menu::create(labelPress,labelPausePress,NULL);
     menu->setPosition(Vec2::ZERO);
     
     //1为层级数，决定背景精灵的绘制顺序,参数数值越大，其绘制时就会越靠前
@@ -98,7 +119,6 @@ bool HelloWorld::init()
         
         sp->setPosition(Vec2(sp->getContentSize().width * i
                              + WIN_ORIGIN.x - deltaDistance,WIN_ORIGIN.y + sp->getContentSize().height));
-        //sp->setPositionZ(1);
         
         
         sp->setVisible(true);
@@ -106,8 +126,6 @@ bool HelloWorld::init()
         
         //添加到数组中
         _keySpriteArray[i] = sp;
-        
-        //m_vecKeyNormal.push_back(sp);
     }
     
     
@@ -118,10 +136,11 @@ bool HelloWorld::init()
     //初始化为不在播放
     _isPlay = false;
     
+    _isHasPause = false;
+    
     //初始化记时时间
     _playTime = 0.0f;
     
-    _isContactFlag = false;
     
     
     //初始化数组
@@ -143,18 +162,83 @@ void HelloWorld::ButtonPress(Ref* pSender)
     auto fadeOutAction = FadeOut::create(0.5f);
     
     _pressLabel->runAction(fadeOutAction);
+    
+    
     //移除开始label
-    this->removeChild(_pressLabel);
+    //this->removeChild(_pressLabel);
     
     
     printf("开始了\n");
     
-    
+    //重置所有精灵容器中的精灵运动
+    if (_isHasPause)
+    {
+        //遍历在精灵容器内的精灵
+        size_t len = m_vecSprite.size();
+        
+        for (size_t i =0; i < len; i ++)
+        {
+            auto spriteMove = m_vecSprite[i];
+            
+            if (spriteMove != NULL)
+            {
+                spriteMove->resume();
+            }
+        }
+    }
     
     //更新正在播放
     _isPlay = true;
     
+    //暂停按钮显示
+    _pressPauseLabel->setOpacity(255);
+    
+    
 }
+
+
+//暂停点击按钮触发事件
+void HelloWorld::ButtonPausePress(Ref* pSender)
+{
+     printf("点击了暂停\n");
+    
+    
+    //暂停按钮消失
+    _pressPauseLabel->setOpacity(0);
+    
+    
+    //2-label添加动作类:淡入淡出动作
+    //2.1 淡出动作:透明度从0逐渐变为255从而在屏幕上消失
+    auto fadeOutAction = FadeIn::create(0.5f);
+    
+    _pressLabel->runAction(fadeOutAction);
+    
+    
+    
+    //更新正在暂停
+    _isPlay = false;
+    
+    //表示已经暂停过至少一次
+    _isHasPause = true;
+    
+    
+    //停止所有精灵容器中的精灵运动
+    //遍历在精灵容器内的精灵
+    size_t len = m_vecSprite.size();
+    
+    for (size_t i =0; i < len; i ++)
+    {
+        auto spriteMove = m_vecSprite[i];
+    
+         if (spriteMove != NULL)
+         {
+             spriteMove->pause();
+         }
+    }
+    
+}
+
+
 
 //实现update方法
 //参数dt:上一次调用这个函数到本次调用这个函数之间间隔多少秒
@@ -217,8 +301,6 @@ void HelloWorld::update(float dt)
                     //位置坐标(锚点的坐标)
                     //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
                     spriteMove->setPosition(Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
-                    
-                    //spriteMove->setPositionZ(0);
                     
                     
                     
@@ -381,11 +463,6 @@ int GetPianoNumWithMidiCode(NSString *midiCode)
     return num;
 }
 
-
-void HelloWorld::ActionDone()
-{
-    
-}
 //点击右下角的退出按钮的触发事件
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {

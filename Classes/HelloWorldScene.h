@@ -41,9 +41,11 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
+    //点击开始
     void ButtonPress(Ref* pSender);
     
-    void ActionDone();
+    //点击暂停按钮
+    void ButtonPausePress(Ref* pSender);
     
     
     
@@ -51,10 +53,6 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
-    
-    
-    //长方形的下落白块精灵的数组(暂定为4）
-    cocos2d::Sprite *_spriteArray[4];
     
 
     //精灵容器(用于存放精灵)
@@ -68,18 +66,24 @@ public:
     
     
     
-    //Label属性(指针)
+    //Label属性(指针)(点击开始)
     cocos2d::Label *_pressLabel;
+    
+    //Label(点击暂停)
+    cocos2d::Label *_pressPauseLabel;
+    
     
     
     /* 重写update函数 */
     virtual void  update(float dt);
     
-    //记录是否刚好接触到了键盘
-    bool _isContactFlag;
     
     //判断有没有正在播放当前的音符
     bool _isPlay;
+    
+    //判断是否暂停过
+    bool _isHasPause;
+    
     
     //播放记时
     float _playTime;
