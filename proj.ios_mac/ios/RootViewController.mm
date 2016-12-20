@@ -2,11 +2,71 @@
 #import "RootViewController.h"
 #import "cocos2d.h"
 #import "platform/ios/CCEAGLView-ios.h"
+#include "AppDelegate.h"
+
 
 //关于MIDI轨道的解析
 #import "ChunkHeader.h"
 #import "MTRKChunk.h"
 #import "FF5103ChunkEvent.h"
+
+//C++与OC的交互类
+class Base : public cocos2d::Ref
+{
+    
+public:
+    
+    //1-播放时间
+    float _getPlayTime;
+    
+    
+    void Play(Ref* sender)
+    {
+        cocos2d::__Float *getFloat = static_cast<cocos2d::__Float*>(sender);
+        
+        _getPlayTime = getFloat->getValue();
+        
+        
+        printf("播放时间=%f\n",_getPlayTime);
+    }
+    
+    void DTTime(Ref* sender)
+    {
+        cocos2d::__Float *getFloat = static_cast<cocos2d::__Float*>(sender);
+        
+        float getdtTime = getFloat->getValue();
+        
+        
+        printf("间隔时间=%f\n",getdtTime);
+        
+        
+        RootViewController *rootVC = kRootViewController;
+        
+        //当获取到播放时间之后，根据播放时间来生成事件数组
+        NSMutableArray *pianoEventArray  =  [rootVC.playMusic PlayForGameWithStartTime:_getPlayTime andEndTime:_getPlayTime + getdtTime];
+        
+        
+        //获取到了当前时间的事件数组
+        NSLog(@"%@",pianoEventArray);
+        
+    }
+    
+    void addObserver()
+    {
+        // 订阅PlayTime消息
+        cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(Base::Play),"PlayTime", NULL);
+        
+        //订阅DTTime信息
+         cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(Base::DTTime),"DTTime", NULL);
+    }
+    
+    /*
+    ~Base()
+    {
+        cocos2d::__NotificationCenter::getInstance()->removeAllObservers(this);
+    }
+    */
+};
 
 
 
@@ -40,13 +100,20 @@
 - (void)loadView
 {
     
-    [super loadView];
     
+    //[super loadView];
+    
+    
+    //此app对象为Classes中的AppDelegate
     cocos2d::Application *app = cocos2d::Application::getInstance();
+    
     
     // Initialize the GLView attributes
     app->initGLContextAttrs();
     cocos2d::GLViewImpl::convertAttrs();
+    
+    
+    
     
     // Initialize the CCEAGLView
     CCEAGLView *eaglView = [CCEAGLView viewWithFrame: [UIScreen mainScreen].bounds
@@ -66,7 +133,7 @@
     
     
     
-    
+    //openGL视窗
     cocos2d::GLView *glview = cocos2d::GLViewImpl::createWithEAGLView((__bridge void *)self.view);
     
     //set the GLView as OpenGLView of the Director
@@ -76,8 +143,8 @@
     
     
     //run the cocos2d-x game scene
+    //调用AppDelegate中的applicationDidFinishLaunching方法
     app->run();
-    
 }
 
 
@@ -87,6 +154,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     //轨道头初始化
     _chunkHead = [ChunkHeader sharedChunkHeaderFrom:kFilePath];
@@ -103,7 +171,12 @@
     
     //[_playMusic PlayMIDIMultiTempMusic];
     
+    auto Bclass = Base::Base();
+    
+    Bclass.addObserver();
+    
 }
+
 
 //1-当前的midi的总时间
 -(float)midiAllTime
@@ -407,3 +480,4 @@
 
 
 @end
+

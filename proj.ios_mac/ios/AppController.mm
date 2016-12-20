@@ -16,6 +16,11 @@ static AppDelegate s_sharedApplication;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+     //auto scene = s_sharedApplication._scene;
+    
+    
+    
     // Override point for customization after application launch.
 
     // Add the view controller's view to the window and display.

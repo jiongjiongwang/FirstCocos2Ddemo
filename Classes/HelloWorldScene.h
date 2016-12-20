@@ -53,15 +53,13 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
     
+    //键盘精灵数组
+    cocos2d::Sprite *_keySpriteArray[64];
     
-
-    //精灵容器(用于存放精灵)
+    //精灵容器(用于存放下落白块精灵)
     std::vector<cocos2d::Sprite *> m_vecSprite;
     
     
-    
-    //键盘精灵数组
-    cocos2d::Sprite *_keySpriteArray[64];
     
     
     
@@ -88,8 +86,11 @@ public:
     //播放记时
     float _playTime;
     
-
+    //用于记录当前的时间是否已经生成了事件
+    bool _isCreateEventFlag0;
     
+    //记录是否刚好接触到了键盘
+    bool _isContactFlag;
 
 };
 
