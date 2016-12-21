@@ -3,6 +3,9 @@
 
 #include "cocos2d.h"
 
+
+
+
 //场景大小的宏
 //当前的width:480.000031 Height:270.422546(横向屏幕)
 #define WIN_SIZE   Director::getInstance()->getVisibleSize()
@@ -47,6 +50,7 @@ public:
     //点击暂停按钮
     void ButtonPausePress(Ref* pSender);
     
+    void GetEvent(Ref* sender);
     
     
     
@@ -91,6 +95,10 @@ public:
     
     //记录是否刚好接触到了键盘
     bool _isContactFlag;
+    
+    //获取到的事件个数
+    int _getEventNum;
+    
 
 };
 

@@ -81,7 +81,8 @@
 		FE4613141E00E9AC0075EA06 /* MTRKChunk.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613121E00E9AC0075EA06 /* MTRKChunk.m */; };
 		FE4613181E00EA080075EA06 /* NSArray+Log.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4613171E00EA080075EA06 /* NSArray+Log.m */; };
 		FE46131C1E00EF6A0075EA06 /* PlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = FE46131B1E00EF6A0075EA06 /* PlayMusic.m */; };
-		FE48FB471E09044C00BBEE92 /* TempLink.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE48FB461E09044C00BBEE92 /* TempLink.mm */; };
+		FE944B181E0A5922007C10F9 /* TheEventData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE944B161E0A5922007C10F9 /* TheEventData.cpp */; };
+		FE944B221E0A8287007C10F9 /* MyLink.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE944B201E0A8287007C10F9 /* MyLink.mm */; };
 		FEF844B41E07AB8B00FC659A /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF844B31E07AB8B00FC659A /* HelloWorldScene.cpp */; };
 		FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */; };
 /* End PBXBuildFile section */
@@ -204,8 +205,10 @@
 		FE4613171E00EA080075EA06 /* NSArray+Log.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Log.m"; sourceTree = SOURCE_ROOT; };
 		FE46131A1E00EF6A0075EA06 /* PlayMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayMusic.h; sourceTree = SOURCE_ROOT; };
 		FE46131B1E00EF6A0075EA06 /* PlayMusic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayMusic.m; sourceTree = SOURCE_ROOT; };
-		FE48FB451E09044C00BBEE92 /* TempLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TempLink.h; sourceTree = "<group>"; };
-		FE48FB461E09044C00BBEE92 /* TempLink.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TempLink.mm; sourceTree = "<group>"; };
+		FE944B161E0A5922007C10F9 /* TheEventData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TheEventData.cpp; sourceTree = SOURCE_ROOT; };
+		FE944B171E0A5922007C10F9 /* TheEventData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheEventData.h; sourceTree = SOURCE_ROOT; };
+		FE944B201E0A8287007C10F9 /* MyLink.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyLink.mm; sourceTree = "<group>"; };
+		FE944B211E0A8287007C10F9 /* MyLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLink.h; sourceTree = "<group>"; };
 		FEF844B31E07AB8B00FC659A /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
 		FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spriteButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -297,7 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				46880B8319C43A87006E1F66 /* Classes */,
-				FE48FB441E09037E00BBEE92 /* LinkCplusAndOther */,
+				FE48FB441E09037E00BBEE92 /* TempCplusAndOther */,
 				46880B7519C43A67006E1F66 /* Resources */,
 				1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -462,13 +465,15 @@
 			name = Play;
 			sourceTree = "<group>";
 		};
-		FE48FB441E09037E00BBEE92 /* LinkCplusAndOther */ = {
+		FE48FB441E09037E00BBEE92 /* TempCplusAndOther */ = {
 			isa = PBXGroup;
 			children = (
-				FE48FB451E09044C00BBEE92 /* TempLink.h */,
-				FE48FB461E09044C00BBEE92 /* TempLink.mm */,
+				FE944B201E0A8287007C10F9 /* MyLink.mm */,
+				FE944B211E0A8287007C10F9 /* MyLink.h */,
+				FE944B161E0A5922007C10F9 /* TheEventData.cpp */,
+				FE944B171E0A5922007C10F9 /* TheEventData.h */,
 			);
-			name = LinkCplusAndOther;
+			name = TempCplusAndOther;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -626,7 +631,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE48FB471E09044C00BBEE92 /* TempLink.mm in Sources */,
+				FE944B181E0A5922007C10F9 /* TheEventData.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				FE46131C1E00EF6A0075EA06 /* PlayMusic.m in Sources */,
 				FEF844B41E07AB8B00FC659A /* HelloWorldScene.cpp in Sources */,
@@ -635,6 +640,7 @@
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				FE4613031E00E3DA0075EA06 /* MIDISampler.m in Sources */,
 				FE4613181E00EA080075EA06 /* NSArray+Log.m in Sources */,
+				FE944B221E0A8287007C10F9 /* MyLink.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				FE4613071E00E6EB0075EA06 /* ChunkHeader.m in Sources */,
 				FE4613111E00E93E0075EA06 /* FF5103ChunkEvent.m in Sources */,

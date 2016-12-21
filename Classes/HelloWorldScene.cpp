@@ -1,5 +1,8 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "TheEventData.h"
+#include "MyLink.h"
+
 
 //声明cocos2d的命名空间
 //#define USING_NS_CC  using namespace cocos2d
@@ -109,7 +112,7 @@ bool HelloWorld::init()
         sp->setPosition(Vec2(sp->getContentSize().width * i
                              + WIN_ORIGIN.x - deltaDistance,WIN_ORIGIN.y + sp->getContentSize().height));
         sp->setVisible(true);
-        this->addChild(sp,0);
+        this->addChild(sp,1);
         
         //添加到数组中
         _keySpriteArray[i] = sp;
@@ -133,6 +136,20 @@ bool HelloWorld::init()
     
     
     
+    
+    //创建一个Link实例
+    auto LinkInstance = TempLinkOC::TempLinkOC();
+    
+    LinkInstance.addObserver();
+    
+    
+    
+    
+    
+    //接收外来的通知
+    cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(HelloWorld::GetEvent),"EventNum", NULL);
+    
+    
     return true;
 }
 
@@ -147,7 +164,7 @@ void HelloWorld::ButtonPress(Ref* pSender)
     
     printf("开始了\n");
     
-    /*
+    
     //重置所有精灵容器中的精灵运动
     if (_isHasPause)
     {
@@ -164,7 +181,7 @@ void HelloWorld::ButtonPress(Ref* pSender)
             }
         }
     }
-    */
+    
     //更新正在播放
     _isPlay = true;
     
@@ -195,7 +212,7 @@ void HelloWorld::ButtonPausePress(Ref* pSender)
     //更新正在暂停
     _isPlay = false;
     
-    /*
+    
     //表示已经暂停过至少一次
     _isHasPause = true;
      
@@ -212,11 +229,92 @@ void HelloWorld::ButtonPausePress(Ref* pSender)
             spriteMove->pause();
         }
     }
-    */
+    
 }
 
-
-
+void HelloWorld::GetEvent(Ref* sender)
+{
+    
+    auto myEvent = (MyEventData *)sender;
+    
+    //持续时间
+    float duratime = myEvent->eventDudration;
+    
+    //根据持续时间来得出长度
+    float spriteHeight = duratime * (WIN_SIZE.height - _keySpriteArray[0]->getContentSize().height) / preActionTime;
+    
+    //音符号
+    int pianoNum = myEvent->eventPianoNum;
+    
+    
+    //printf("helloWorld-->持续时间:%f",duratime);
+    
+    //printf("helloWorld-->音符号:%d\n",pianoNum);
+    
+    //利用持续时间和音符号来创建长方形精灵
+    //1-生成
+    //精灵类Sprite->Node类->Ref类
+    auto spriteMove = Sprite::create("spriteButton.png");
+    
+    
+    
+    //设置锚点(锚点下移)
+    spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+    //位置坐标(锚点的坐标)
+    //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+    spriteMove->setPosition(Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+    
+    
+    
+    
+    //得出精灵的原长度
+    float oldSpriteHeight = spriteMove->getContentSize().height;
+    
+    //printf("精灵的原长度%f\n",oldSpriteHeight);
+    
+    //求出需要放大/缩小的倍数
+    float ratio = spriteHeight/oldSpriteHeight;
+    
+    //精灵放大
+    spriteMove->setScaleY(ratio);
+    
+    //printf("精灵的现在的长度%f\n",spriteMove->getContentSize().height);
+    
+    //精灵放大的同时也要把contentsize设置一下
+    spriteMove->setContentSize(cocos2d::Size(spriteMove->getContentSize().width,spriteHeight));
+    
+    
+    
+    //设置颜色为红色
+    spriteMove->setColor(Color3B(255, 0, 0));
+    this->addChild(spriteMove, 0);
+    
+    
+    
+    //2-运动
+    //开始做运动
+    //数组中的动作(生成之后马上开始动作)
+    //1-移动动作(前戏移动)
+    auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, preDistance));
+    
+    
+    
+    //2-入戏运动
+    auto pressActionMoveTo = MoveTo::create(duratime, Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, preDistance - spriteHeight));
+    
+    //3-顺序动作
+    auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+    
+    //运行两个动作
+    spriteMove->runAction(sequenceMove);
+    
+    
+    
+    //将生成的精灵存入到精灵容器中
+    m_vecSprite.push_back(spriteMove);
+    
+    
+}
 
 
 //实现update方法
@@ -234,6 +332,8 @@ void HelloWorld::update(float dt)
         //1-发送当前的播放时间
         auto nowPlayTime = __Float::create(_playTime);
         
+        
+        
         __NotificationCenter::getInstance()->postNotification("PlayTime",nowPlayTime);
         
         
@@ -244,98 +344,97 @@ void HelloWorld::update(float dt)
         
         
         
-        /*
-        //传入时间作为参数点
-        if (_playTime >= 0.0f && _isCreateEventFlag0 == false)
-        {
-            //在此动态地根据时间来生成精灵，并存入精灵数组中
-            //在生成精灵之前先求出精灵的长度(根据精灵的播放时间，当前假设每一个播放时间都为0.15秒)
-            //精灵的长度由事件的持续时间来设置
-            //float spriteHeight = 0.15 * preDistance / preActionTime;
-            
-            //printf("0.15秒的长度是%f\n",spriteHeight);
-            
-            //1-生成
-            //精灵类Sprite->Node类->Ref类
-            auto spriteMove = Sprite::create("spriteButton.png");
-            //设置锚点(锚点下移)
-            spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
-            //位置坐标(锚点的坐标)
-            //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
-            spriteMove->setPosition(Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
-            
-            //设置颜色为红色
-            spriteMove->setColor(Color3B(255, 0, 0));
-            this->addChild(spriteMove, 0);
-            
-            
-            
-            //2-运动
-            //开始做运动
-            //数组中的动作(生成之后马上开始动作)
-            //1-移动动作(前戏移动)
-            auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance));
-            
-            //2-入戏运动
-            auto pressActionMoveTo = MoveTo::create(0.15, Vec2(_keySpriteArray[3]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[3]->getPosition().x, preDistance - spriteMove->getContentSize().height));
-            
-            //3-顺序动作
-            auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
-            
-            //运行两个动作
-            spriteMove->runAction(sequenceMove);
-            
-            
-            //添加到数组中
-            _spriteArray[0] = spriteMove;
-            
-            
-            
-            _isCreateEventFlag0 = true;
-        }
-        */
-        _playTime += dt;        
+        _playTime += dt;
     }
     
-    /*
-    //遍历还在精灵数组中的精灵
-    for (int i = 0; i < 4; i++)
+    //2-判断长方形的接触(是否接触到了键盘钢琴)
+    //遍历还在精灵容器内的精灵
+
+    size_t len = m_vecSprite.size();
+
+    for (size_t i =0; i < len; i ++)
     {
-        auto spriteMove = _spriteArray[i];
+        auto spriteMove = m_vecSprite[i];
         
-        //判断取出来的精灵是否有值
+        
+        //判断精灵是否有值
+        //判断取出来的精灵是否有值(判断精灵数组是否为空)
         if (spriteMove != NULL)
         {
-         
             //获取精灵的坐标值
             Vec2 sprite1Positin = spriteMove->getPosition();
             
+            
+            //直接取出精灵的长度
+            float spriteHeight = spriteMove->getContentSize().height;
+            
+            
+            
             //当长方的精灵恰好接触到了键盘之后了(只记录一次)
-            if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - spriteMove->getContentSize().height)&&_isContactFlag == false)
+            if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - spriteHeight))
             {
-                printf("音符%d刚接触到了键盘,开始播放声音\n",i);
                 
-                _isContactFlag = true;
+                //printf("播放当前的音符");
+                
+#warning 发i通知给  TempLinkOC 让其播放音符
+                auto nowPlayMIDI = __Integer::create((int)i);
+                
+                
+                
+                __NotificationCenter::getInstance()->postNotification("PlayMIDI",nowPlayMIDI);
+                
+                
+                
+                /*
+                 //取出音符，播放声音
+                 ChunkEvent *pianoEvent = mEventArrayCopy[i];
+                 
+                //取出当前的音符事件有没有被播放过
+                BOOL eventHasPlay = pianoEvent.isHasPlay;
+                //表示之前还没有被播放
+                if (eventHasPlay == NO)
+                {
+                    //printf("音符%zu刚接触到了键盘,开始播放声音\n",i);
+                    //NSLog(@"播放事件为%@",pianoEvent);
+                    
+                    [rootVC.playMusic PlaySoundWithChunkEvent:pianoEvent];
+                    
+                    //已经播放了，更新播放信息
+                    pianoEvent.isHasPlay = YES;
+                }
+                */
+                
+                
+                
             }
             //当播放结束时
-            else if ((sprite1Positin.y + spriteMove->getContentSize().height<= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&_isContactFlag == true)
+            else if ((sprite1Positin.y + spriteHeight<= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height))
             {
-                printf("当前音符%d播放结束\n",i);
-                
-                _isContactFlag = false;
-                
-                //播放结束
-                _isPlay = false;
+                //printf("当前音符播放结束\n");
                 
                 //将button从界面上移除
                 this->removeChild(spriteMove);
                 
-                _spriteArray[i] = NULL;
+                
+                //将当前的精灵从容器中删除
+#warning ???待分析是否出错?
+                m_vecSprite.erase(m_vecSprite.begin() + i);
+                
+                
+#warning 发送删除事件数组中某个事件的通知
+                auto nowDeleteMIDI = __Integer::create((int)i);
+                
+                __NotificationCenter::getInstance()->postNotification("DeleteEvent",nowDeleteMIDI);
+                
+                //同时将所对应的事件从事件数组中删除
+                //[tempEventArray removeObjectAtIndex:i];
+                
             }
             
         }
+        
+        
     }
-    */ 
 }
 
 //点击右下角的退出按钮的触发事件
