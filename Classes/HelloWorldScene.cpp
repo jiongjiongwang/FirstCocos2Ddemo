@@ -1,7 +1,7 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 #include "TheEventData.h"
-#include "MyLink.h"
+
 
 
 //声明cocos2d的命名空间
@@ -134,15 +134,19 @@ bool HelloWorld::init()
     
     
     //创建一个Link实例
-    auto LinkInstance = TempLinkOC::TempLinkOC();
+    _LinkInstance = TempLinkOC::TempLinkOC();
     
-    LinkInstance.addObserver();
+    
+    _LinkInstance.addObserver();
     
     
     
 #warning 接收的通知1:接受TempLinkOC处理好的钢琴事件的通知
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(HelloWorld::GetEvent),"EventNum", NULL);
     
+    
+#warning 接收的通知2:接收TempLinkOC不在生成新事件的通知
+    cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(HelloWorld::CreateNoEvent),"CreateNoEvent", NULL);
     
     return true;
 }
@@ -310,6 +314,19 @@ void HelloWorld::GetEvent(Ref* sender)
 }
 
 
+//接收不再生成新事件的通知
+void HelloWorld::CreateNoEvent(Ref* sender)
+{
+    //更新_isplay
+    
+    _isPlay = false;
+    
+     printf("不再生成新的事件了\n");
+    
+    
+}
+
+
 //实现update方法
 //参数dt:上一次调用这个函数到本次调用这个函数之间间隔多少秒
 //时时刻刻都在调用这个方法进行界面帧的刷新
@@ -323,6 +340,8 @@ void HelloWorld::update(float dt)
         //printf("播放时间%f\n",_playTime);
         
      
+
+        /*
 #warning 发送的通知1:发送播放时间和间隔时间的通知
         //1-发送当前的播放时间
         auto nowPlayTime = __Float::create(_playTime);
@@ -335,8 +354,10 @@ void HelloWorld::update(float dt)
         auto nowDTTime = __Float::create(dt);
         
         __NotificationCenter::getInstance()->postNotification("DTTime",nowDTTime);
+        */
         
         
+        _LinkInstance.CreateEvent(_playTime,dt);
         
         
         
@@ -370,13 +391,19 @@ void HelloWorld::update(float dt)
             if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - spriteHeight))
             {
                 
-                
+                /*
 #warning 发送的通知2:发i通知给TempLinkOC 让其播放音符的通知
                 auto nowPlayMIDI = __Integer::create((int)i);
                 
                 
                 
                 __NotificationCenter::getInstance()->postNotification("PlayMIDI",nowPlayMIDI);
+                */
+                
+                
+                //播放midi音符
+                _LinkInstance.PlayEvent((int)i);
+                
                 
             }
             //当播放结束时
@@ -392,12 +419,19 @@ void HelloWorld::update(float dt)
                 m_vecSprite.erase(m_vecSprite.begin() + i);
                 
                 
-                
+                /*
 #warning 发送的通知3:发送删除事件数组中某个事件的通知
                 auto nowDeleteMIDI = __Integer::create((int)i);
                 
                 __NotificationCenter::getInstance()->postNotification("DeleteEvent",nowDeleteMIDI);
                 
+               */
+                
+                
+                //删除当前事件
+                 _LinkInstance.DeleteEvent((int)i);
+                 
+                 
                 //删除一个，i不更新为i++
                 i--;
             }

@@ -93,11 +93,77 @@ void TempLinkOC::DTTime(Ref* sender)
     {
         
 #warning 发送通知,使停止播放
-        printf("不再生成新的事件了\n");
+       
         
     }
 }
 
+//根据播放事件和间隔时间来生成事件
+void TempLinkOC::CreateEvent(float playTime,float dtTime)
+{
+    
+    /*
+    printf("播放时间=%f\n",playTime);
+    
+    printf("间隔时间=%f\n",dtTime);
+    */
+    
+    RootViewController *rootVC = kRootViewController;
+    
+    //当获取到播放时间之后，根据播放时间来生成事件数组
+    NSMutableArray *pianoEventArray  =  [rootVC.playMusic PlayForGameWithStartTime:playTime andEndTime:playTime + dtTime];
+    
+    
+    //获取到了当前时间的事件数组
+    //判断事件数组是否有数据
+    if(pianoEventArray.count > 0)
+    {
+        for (ChunkEvent *pianoEvent in pianoEventArray)
+        {
+            //1-精灵的长度由事件的持续时间来决定
+            //取出事件的持续时间(float)
+            float duratime = pianoEvent.eventDuration;
+            
+            
+            //2-精灵的x轴的位置由播放音符来决定
+            //取出钢琴事件的音符号(int)
+            NSString *midiCode = pianoEvent.midiCode;
+            
+            int pianoNum =  GetPianoNumWithMidiCode(midiCode);
+            
+            
+            
+            if (pianoNum < 64)
+            {
+                //将持续时间(duratime:float和钢琴事件的音符号pianoNum:int)打包发送给HelloWorldScene
+                //printf("mm-->当前事件的持续时间是%f,音符号是%d\n",duratime,pianoNum);
+                auto eventData = MyEventData::MyEventData();
+                
+                eventData.eventDudration = duratime;
+                
+                eventData.eventPianoNum = pianoNum;
+                
+                cocos2d::__NotificationCenter::getInstance()->postNotification("EventNum",&eventData);
+                
+                
+                //同时将当前的事件存入到待播放事件数组中
+                [tempEventArray addObject:pianoEvent];
+            }
+        }
+        
+    }
+    else if(pianoEventArray.count == 0)
+    {
+        
+    }
+    else if (pianoEventArray == nil)
+    {
+        
+#warning 发送通知,使停止播放
+       cocos2d::__NotificationCenter::getInstance()->postNotification("CreateNoEvent",NULL);
+    }
+    
+}
 
 
 
@@ -133,6 +199,43 @@ void TempLinkOC::PlayMIDI(Ref* sender)
     
 }
 
+//外接声明一个方法，用接收外来的事件索引来播放事件
+void TempLinkOC::PlayEvent(int midiIndex)
+{
+    
+    //取出音符，播放声音
+    ChunkEvent *pianoEvent = tempEventArray[midiIndex];
+    
+    //取出当前的音符事件有没有被播放过
+    BOOL eventHasPlay = pianoEvent.isHasPlay;
+    //表示之前还没有被播放
+    if (eventHasPlay == NO)
+    {
+        //printf("音符%zu刚接触到了键盘,开始播放声音\n",i);
+        //NSLog(@"播放事件为%@",pianoEvent);
+        
+        RootViewController *rootVC = kRootViewController;
+        
+        
+        [rootVC.playMusic PlaySoundWithChunkEvent:pianoEvent];
+        
+        //已经播放了，更新播放信息
+        pianoEvent.isHasPlay = YES;
+    }
+    
+}
+
+//外接一个方法，用于接收外来的事件索引来删除某个事件
+void TempLinkOC::DeleteEvent(int midiIndex)
+{
+    
+    [tempEventArray removeObjectAtIndex:midiIndex];
+    
+}
+
+
+
+
 //删除数组中的某个已经播放的事件(需要用到的数据:需要删除事件的索引)
 void TempLinkOC::DeleteEvent(Ref* sender)
 {
@@ -145,6 +248,8 @@ void TempLinkOC::DeleteEvent(Ref* sender)
 
 void TempLinkOC::addObserver()
 {
+    
+    /*
     // 订阅PlayTime消息
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(TempLinkOC::Play),"PlayTime", NULL);
     
@@ -159,6 +264,8 @@ void TempLinkOC::addObserver()
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(TempLinkOC::PlayMIDI),"PlayMIDI", NULL);
     //订阅删除事件的信息
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(TempLinkOC::DeleteEvent),"DeleteEvent", NULL);
+    */
+    
     
     
     //初始化事件数组

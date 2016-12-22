@@ -2,8 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-
-
+#include "MyLink.h"
 
 
 //场景大小的宏
@@ -52,6 +51,8 @@ public:
     
     void GetEvent(Ref* sender);
     
+    void CreateNoEvent(Ref* sender);
+    
     
     
     // implement the "static create()" method manually
@@ -89,6 +90,11 @@ public:
     
     //播放记时
     float _playTime;
+    
+    
+    //声明一个TempLinkOC变量
+    TempLinkOC _LinkInstance;
+
 
 };
 
