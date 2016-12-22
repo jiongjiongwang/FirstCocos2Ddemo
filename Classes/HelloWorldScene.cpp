@@ -128,10 +128,6 @@ bool HelloWorld::init()
     _playTime = 0.0f;
     
     
-    
-    _isContactFlag = false;
-    
-    
     this->scheduleUpdate();
     
     
@@ -144,9 +140,7 @@ bool HelloWorld::init()
     
     
     
-    
-    
-    //接收外来的通知
+#warning 接收的通知1:接受TempLinkOC处理好的钢琴事件的通知
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(HelloWorld::GetEvent),"EventNum", NULL);
     
     
@@ -230,6 +224,10 @@ void HelloWorld::ButtonPausePress(Ref* pSender)
         }
     }
     
+    
+    //关掉所有的音
+    //静态方法:关掉所有的音
+    TempLinkOC::CloseAllSound();
 }
 
 void HelloWorld::GetEvent(Ref* sender)
@@ -245,11 +243,6 @@ void HelloWorld::GetEvent(Ref* sender)
     
     //音符号
     int pianoNum = myEvent->eventPianoNum;
-    
-    
-    //printf("helloWorld-->持续时间:%f",duratime);
-    
-    //printf("helloWorld-->音符号:%d\n",pianoNum);
     
     //利用持续时间和音符号来创建长方形精灵
     //1-生成
@@ -329,10 +322,11 @@ void HelloWorld::update(float dt)
     {
         //printf("播放时间%f\n",_playTime);
         
+     
+#warning 发送的通知1:发送播放时间和间隔时间的通知
         //1-发送当前的播放时间
         auto nowPlayTime = __Float::create(_playTime);
-        
-        
+    
         
         __NotificationCenter::getInstance()->postNotification("PlayTime",nowPlayTime);
         
@@ -344,15 +338,17 @@ void HelloWorld::update(float dt)
         
         
         
+        
+        
         _playTime += dt;
     }
     
     //2-判断长方形的接触(是否接触到了键盘钢琴)
     //遍历还在精灵容器内的精灵
 
-    size_t len = m_vecSprite.size();
+    //size_t len = m_vecSprite.size();
 
-    for (size_t i =0; i < len; i ++)
+    for (size_t i =0; i < m_vecSprite.size(); i ++)
     {
         auto spriteMove = m_vecSprite[i];
         
@@ -374,37 +370,13 @@ void HelloWorld::update(float dt)
             if ((sprite1Positin.y <= WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height)&&(sprite1Positin.y> WIN_ORIGIN.y + _keySpriteArray[0]->getContentSize().height - spriteHeight))
             {
                 
-                //printf("播放当前的音符");
                 
-#warning 发i通知给  TempLinkOC 让其播放音符
+#warning 发送的通知2:发i通知给TempLinkOC 让其播放音符的通知
                 auto nowPlayMIDI = __Integer::create((int)i);
                 
                 
                 
                 __NotificationCenter::getInstance()->postNotification("PlayMIDI",nowPlayMIDI);
-                
-                
-                
-                /*
-                 //取出音符，播放声音
-                 ChunkEvent *pianoEvent = mEventArrayCopy[i];
-                 
-                //取出当前的音符事件有没有被播放过
-                BOOL eventHasPlay = pianoEvent.isHasPlay;
-                //表示之前还没有被播放
-                if (eventHasPlay == NO)
-                {
-                    //printf("音符%zu刚接触到了键盘,开始播放声音\n",i);
-                    //NSLog(@"播放事件为%@",pianoEvent);
-                    
-                    [rootVC.playMusic PlaySoundWithChunkEvent:pianoEvent];
-                    
-                    //已经播放了，更新播放信息
-                    pianoEvent.isHasPlay = YES;
-                }
-                */
-                
-                
                 
             }
             //当播放结束时
@@ -417,18 +389,17 @@ void HelloWorld::update(float dt)
                 
                 
                 //将当前的精灵从容器中删除
-#warning ???待分析是否出错?
                 m_vecSprite.erase(m_vecSprite.begin() + i);
                 
                 
-#warning 发送删除事件数组中某个事件的通知
+                
+#warning 发送的通知3:发送删除事件数组中某个事件的通知
                 auto nowDeleteMIDI = __Integer::create((int)i);
                 
                 __NotificationCenter::getInstance()->postNotification("DeleteEvent",nowDeleteMIDI);
                 
-                //同时将所对应的事件从事件数组中删除
-                //[tempEventArray removeObjectAtIndex:i];
-                
+                //删除一个，i不更新为i++
+                i--;
             }
             
         }

@@ -89,16 +89,6 @@ public:
     
     //播放记时
     float _playTime;
-    
-    //用于记录当前的时间是否已经生成了事件
-    bool _isCreateEventFlag0;
-    
-    //记录是否刚好接触到了键盘
-    bool _isContactFlag;
-    
-    //获取到的事件个数
-    int _getEventNum;
-    
 
 };
 

@@ -142,7 +142,7 @@
 {
     if (endTime > self.midiAllTime)
     {
-        NSLog(@"播放结束");
+        //NSLog(@"播放结束");
         
         return nil;
     }
@@ -663,6 +663,23 @@
         }
         
     }];
+}
+
+//重载一个播放方法(传入状态码和后续的两个参数值)
+/*
+ - (void) MIDIShortMsg:(Byte)status withData1:(Byte)data1 withData2:(Byte)data2
+ */
+-(void)sendMIDIControlMsgWithStatus:(NSString *)dataStr
+                        andData1Str:(NSString *)StrData1
+                        andData2Str:(NSString *)StrData2
+{
+    Byte statusData = strtoul([dataStr UTF8String],0,16);
+    
+    Byte data1 = strtoul([StrData1 UTF8String],0,16);
+    
+    Byte data2 = strtoul([StrData2 UTF8String],0,16);
+    
+    [_sampler MIDIShortMsg:statusData withData1:data1 withData2:data2];
 }
 
 

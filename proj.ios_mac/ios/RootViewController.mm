@@ -3,144 +3,11 @@
 #import "cocos2d.h"
 #import "platform/ios/CCEAGLView-ios.h"
 #include "AppDelegate.h"
-#include "TheEventData.h"
-
-
 
 //关于MIDI轨道的解析
 #import "ChunkHeader.h"
 #import "MTRKChunk.h"
 #import "FF5103ChunkEvent.h"
-
-/*
-//事件数组，用于存放待播放的事件
-//NSMutableArray<ChunkEvent *> *tempEventArray;
-//C++与OC的交互类
-class Base : public cocos2d::Ref
-{
-    
-public:
-    
-    
-    float _getPlayTime;
-    
-    
-    void Play(Ref* sender)
-    {
-        cocos2d::__Float *getFloat = static_cast<cocos2d::__Float*>(sender);
-        
-        _getPlayTime = getFloat->getValue();
-        
-        //printf("播放时间=%f\n",_getPlayTime);
-    }
-    
-    void DTTime(Ref* sender)
-    {
-        cocos2d::__Float *getFloat = static_cast<cocos2d::__Float*>(sender);
-        
-        float getdtTime = getFloat->getValue();
-        
-        
-        RootViewController *rootVC = kRootViewController;
-        
-        //当获取到播放时间之后，根据播放时间来生成事件数组
-        NSMutableArray *pianoEventArray  =  [rootVC.playMusic PlayForGameWithStartTime:_getPlayTime andEndTime:_getPlayTime + getdtTime];
-        
-        
-        //获取到了当前时间的事件数组
-        //判断事件数组是否有数据
-        if(pianoEventArray.count > 0)
-        {
-            for (ChunkEvent *pianoEvent in pianoEventArray)
-            {
-                //1-精灵的长度由事件的持续时间来决定
-                //取出事件的持续时间(float)
-                float duratime = pianoEvent.eventDuration;
-                
-                
-                //2-精灵的x轴的位置由播放音符来决定
-                //取出钢琴事件的音符号(int)
-                NSString *midiCode = pianoEvent.midiCode;
-                
-                int pianoNum =  GetPianoNumWithMidiCode(midiCode);
-                
-                if (pianoNum < 64)
-                {
-                    //将持续时间(duratime:float和钢琴事件的音符号pianoNum:int)打包发送给HelloWorldScene
-                    //printf("mm-->当前事件的持续时间是%f,音符号是%d\n",duratime,pianoNum);
-                    auto eventData = MyEventData::MyEventData();
-                    
-                    eventData.eventDudration = duratime;
-                    
-                    eventData.eventPianoNum = pianoNum;
-                    
-                    cocos2d::__NotificationCenter::getInstance()->postNotification("EventNum",&eventData);
-                    
-                    
-                    //同时将当前的事件存入到待播放事件数组中
-                    //[tempEventArray addObject:pianoEvent];
-                    
-                    
-                    
-                }
-            }
-            
-        }
-        else if(pianoEventArray.count == 0)
-        {
-            
-        }
-        else if (pianoEventArray == nil)
-        {
-            
-#warning 发送通知,使停止播放
-            
-            
-            
-        }
-    }
-    
-    //封装一个方法:根据传入的音符号(NSString)来返回键盘编号(int)
-    int GetPianoNumWithMidiCode(NSString *midiCode)
-    {
-        int num = 0;
-        
-        //先以16为参数告诉strtoul字符串参数表示16进制数字，然后使用0x%X转为数字类型
-        num = int(strtoul([midiCode UTF8String],0,16));
-        
-        //容错处理
-        if (num < 32 || num > 95)
-        {
-            num = 64;
-        }
-        else
-        {
-            num = num - 32;
-        }
-        
-        
-        return num;
-    }
-    
-    
-    void addObserver()
-    {
-        // 订阅PlayTime消息
-        cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(Base::Play),"PlayTime", NULL);
-        
-        //订阅DTTime信息
-        cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(Base::DTTime),"DTTime", NULL);
-    }
-    
- 
-     ~Base()
-     {
-     cocos2d::__NotificationCenter::getInstance()->removeAllObservers(this);
-     }
-};
-*/
-
-
 
 
 @interface RootViewController()
@@ -244,14 +111,6 @@ public:
     
     //[_playMusic PlayMIDIMultiTempMusic];
     
-    
-    
-    //auto BClass = Base::Base();
-    
-    //BClass.addObserver();
-    
-    //初始化数组
-    //tempEventArray = [NSMutableArray array];
 }
 
 

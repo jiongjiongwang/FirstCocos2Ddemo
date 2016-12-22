@@ -34,4 +34,8 @@ public:
     
     void addObserver();
     
+    //关掉所有音的方法(静态方法)
+    static void CloseAllSound();
+    
+    
 };

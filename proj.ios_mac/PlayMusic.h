@@ -36,8 +36,17 @@
 //For cocos2d方面的播放
 -(NSMutableArray<ChunkEvent *> *)PlayForGameWithStartTime:(float)startTime andEndTime:(float)endTime;
 
+
+//重载的播放方法
+-(void)sendMIDIControlMsgWithStatus:(NSString *)dataStr
+                        andData1Str:(NSString *)StrData1
+                        andData2Str:(NSString *)StrData2;
+
+
 //封装播放音乐的方法(传入一个事件)
 -(void)PlaySoundWithChunkEvent:(ChunkEvent *)chunkEvent;
+
+
 
 //BOOL:播放/暂停音乐
 @property (nonatomic,assign)BOOL play;

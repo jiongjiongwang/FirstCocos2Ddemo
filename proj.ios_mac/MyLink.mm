@@ -23,10 +23,10 @@ int GetPianoNumWithMidiCode(NSString *midiCode);
 //事件数组，用于存放要播放的事件
 NSMutableArray<ChunkEvent *> *tempEventArray;
 
-//存放事件数组的copy
-NSArray *mEventArrayCopy;
 
 
+
+//当接收到外界的即时时间和间隔时间之后
 void TempLinkOC::Play(Ref* sender)
 {
     cocos2d::__Float *getFloat = static_cast<cocos2d::__Float*>(sender);
@@ -93,15 +93,17 @@ void TempLinkOC::DTTime(Ref* sender)
     {
         
 #warning 发送通知,使停止播放
+        printf("不再生成新的事件了\n");
         
     }
-    
-    mEventArrayCopy = tempEventArray.copy;
-    
 }
 
 
-//播放MIDI
+
+
+
+
+//播放MIDI(需要用到的数据:需要播放事件的索引)
 void TempLinkOC::PlayMIDI(Ref* sender)
 {
     cocos2d::__Integer *getIndex = static_cast<cocos2d::__Integer*>(sender);
@@ -110,7 +112,7 @@ void TempLinkOC::PlayMIDI(Ref* sender)
     
     
      //取出音符，播放声音
-     ChunkEvent *pianoEvent = mEventArrayCopy[midiIndex];
+     ChunkEvent *pianoEvent = tempEventArray[midiIndex];
      
      //取出当前的音符事件有没有被播放过
      BOOL eventHasPlay = pianoEvent.isHasPlay;
@@ -131,7 +133,7 @@ void TempLinkOC::PlayMIDI(Ref* sender)
     
 }
 
-//删除数组中的某个已经播放的事件
+//删除数组中的某个已经播放的事件(需要用到的数据:需要删除事件的索引)
 void TempLinkOC::DeleteEvent(Ref* sender)
 {
     cocos2d::__Integer *getIndex = static_cast<cocos2d::__Integer*>(sender);
@@ -149,6 +151,10 @@ void TempLinkOC::addObserver()
     //订阅DTTime信息
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(TempLinkOC::DTTime),"DTTime", NULL);
     
+    
+    
+    
+    
     //订阅播放MIDI信息
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(TempLinkOC::PlayMIDI),"PlayMIDI", NULL);
     //订阅删除事件的信息
@@ -159,6 +165,23 @@ void TempLinkOC::addObserver()
     tempEventArray = [NSMutableArray array];
 }
 
+
+//静态方法(关掉所有的音)
+void TempLinkOC::CloseAllSound()
+{
+    
+    //关掉所有的音
+    RootViewController *rootVC = kRootViewController;
+    
+    
+    for (int i = 176; i <= 191; i++)
+    {
+        NSString *eventStatus = [NSString stringWithFormat:@"%02x",i];
+        
+        [rootVC.playMusic sendMIDIControlMsgWithStatus:eventStatus andData1Str:@"78" andData2Str:@"00"];
+    }
+    
+}
 
 
 
