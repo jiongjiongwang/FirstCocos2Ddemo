@@ -49,11 +49,16 @@ public:
     //点击暂停按钮
     void ButtonPausePress(Ref* pSender);
     
-    void GetEvent(Ref* sender);
+    
+    //有关通知的方法
+    //void GetEvent(Ref* sender);
+    
+    
     
     void CreateNoEvent(Ref* sender);
     
-    
+    //声明一个方法，用于接受外接的事件结构体来生成精灵
+    void GetDataCreateSprite(float duratime,int pianoNum);
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);

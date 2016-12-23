@@ -6,7 +6,7 @@
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
 
-#define kFilePath "/Users/wangjiong/Desktop/tu er qi jin xing qu.mid"
+#define kFilePath "/Users/dn210/Desktop/tu er qi jin xing qu.mid"
 
 //全局获取主控制器
 #define kRootViewController (RootViewController *)[[[UIApplication sharedApplication] delegate] window].rootViewController

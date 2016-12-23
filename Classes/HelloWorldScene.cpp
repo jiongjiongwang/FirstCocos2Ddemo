@@ -140,9 +140,11 @@ bool HelloWorld::init()
     _LinkInstance.addObserver();
     
     
-    
+    /*
 #warning 接收的通知1:接受TempLinkOC处理好的钢琴事件的通知
     cocos2d::__NotificationCenter::getInstance()->addObserver(this, callfuncO_selector(HelloWorld::GetEvent),"EventNum", NULL);
+    */
+    
     
     
 #warning 接收的通知2:接收TempLinkOC不在生成新事件的通知
@@ -234,6 +236,7 @@ void HelloWorld::ButtonPausePress(Ref* pSender)
     TempLinkOC::CloseAllSound();
 }
 
+/*
 void HelloWorld::GetEvent(Ref* sender)
 {
     
@@ -309,10 +312,8 @@ void HelloWorld::GetEvent(Ref* sender)
     
     //将生成的精灵存入到精灵容器中
     m_vecSprite.push_back(spriteMove);
-    
-    
 }
-
+*/
 
 //接收不再生成新事件的通知
 void HelloWorld::CreateNoEvent(Ref* sender)
@@ -357,7 +358,21 @@ void HelloWorld::update(float dt)
         */
         
         
-        _LinkInstance.CreateEvent(_playTime,dt);
+        
+        //_LinkInstance.CreateEvent(_playTime,dt);
+        LinkEventData *eventData = _LinkInstance.CreateEventGetData(_playTime, dt);
+        
+        while (eventData != NULL)
+        {
+             //判断结构体有值的时候才生成精灵
+             //取出持续时间和音符号
+            //printf("当前时间=%f,要生成的事件的持续时间=%f,事件的音符号=%d\n",_playTime,eventData->duraTime,eventData->pianoNum);
+            
+            GetDataCreateSprite(eventData->duraTime,eventData->pianoNum);
+            
+            eventData = eventData->next;
+        }
+        
         
         
         
@@ -441,6 +456,79 @@ void HelloWorld::update(float dt)
         
     }
 }
+
+//声明一个方法，用于接受外接的事件结构体来生成精灵
+void HelloWorld::GetDataCreateSprite(float duratime,int pianoNum)
+{
+
+    //根据持续时间来得出长度
+    float spriteHeight = duratime * (WIN_SIZE.height - _keySpriteArray[0]->getContentSize().height) / preActionTime;
+    
+    //利用持续时间和音符号来创建长方形精灵
+    //1-生成
+    //精灵类Sprite->Node类->Ref类
+    auto spriteMove = Sprite::create("spriteButton.png");
+    
+    
+    
+    //设置锚点(锚点下移)
+    spriteMove->setAnchorPoint(Vec2(0.5f,0.0f));
+    //位置坐标(锚点的坐标)
+    //位置坐标由音符号来设置(音符号--->钢琴琴键的索引值---->精灵的x坐标位置)
+    spriteMove->setPosition(Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, WIN_SIZE.height + WIN_ORIGIN.y));
+    
+    
+    
+    
+    //得出精灵的原长度
+    float oldSpriteHeight = spriteMove->getContentSize().height;
+    
+    //printf("精灵的原长度%f\n",oldSpriteHeight);
+    
+    //求出需要放大/缩小的倍数
+    float ratio = spriteHeight/oldSpriteHeight;
+    
+    //精灵放大
+    spriteMove->setScaleY(ratio);
+    
+    //printf("精灵的现在的长度%f\n",spriteMove->getContentSize().height);
+    
+    //精灵放大的同时也要把contentsize设置一下
+    spriteMove->setContentSize(cocos2d::Size(spriteMove->getContentSize().width,spriteHeight));
+    
+    
+    
+    //设置颜色为红色
+    spriteMove->setColor(Color3B(255, 0, 0));
+    this->addChild(spriteMove, 0);
+    
+    
+    
+    //2-运动
+    //开始做运动
+    //数组中的动作(生成之后马上开始动作)
+    //1-移动动作(前戏移动)
+    auto preActionMoveTo = MoveTo::create(preActionTime, Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, preDistance));
+    
+    
+    
+    //2-入戏运动
+    auto pressActionMoveTo = MoveTo::create(duratime, Vec2(_keySpriteArray[pianoNum]->getContentSize().width/2 + WIN_ORIGIN.x + _keySpriteArray[pianoNum]->getPosition().x, preDistance - spriteHeight));
+    
+    //3-顺序动作
+    auto sequenceMove = Sequence::create(preActionMoveTo,pressActionMoveTo, NULL);
+    
+    //运行两个动作
+    spriteMove->runAction(sequenceMove);
+    
+    
+    
+    //将生成的精灵存入到精灵容器中
+    m_vecSprite.push_back(spriteMove);
+    
+}
+
+
 
 //点击右下角的退出按钮的触发事件
 void HelloWorld::menuCloseCallback(Ref* pSender)
