@@ -28,7 +28,7 @@ typedef enum : NSUInteger {
 @property (nonatomic,assign)NSUInteger tickNum;
 
 //一个MIDI文件，轨道头只有一个，使用单例模式
-+(instancetype)sharedChunkHeaderFrom:(char *)fileLocation;
++(instancetype)sharedChunkHeaderFrom:(const char *)fileLocation;
 
 
 

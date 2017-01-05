@@ -83,6 +83,7 @@
 		FE46131C1E00EF6A0075EA06 /* PlayMusic.m in Sources */ = {isa = PBXBuildFile; fileRef = FE46131B1E00EF6A0075EA06 /* PlayMusic.m */; };
 		FE944B181E0A5922007C10F9 /* TheEventData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FE944B161E0A5922007C10F9 /* TheEventData.cpp */; };
 		FE944B221E0A8287007C10F9 /* MyLink.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE944B201E0A8287007C10F9 /* MyLink.mm */; };
+		FEAFE2D71E1E2ADB00E0A9E7 /* tu er qi jin xing qu.mid in Resources */ = {isa = PBXBuildFile; fileRef = FEAFE2D61E1E2ADB00E0A9E7 /* tu er qi jin xing qu.mid */; };
 		FEF844B41E07AB8B00FC659A /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEF844B31E07AB8B00FC659A /* HelloWorldScene.cpp */; };
 		FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */; };
 /* End PBXBuildFile section */
@@ -209,6 +210,7 @@
 		FE944B171E0A5922007C10F9 /* TheEventData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheEventData.h; sourceTree = SOURCE_ROOT; };
 		FE944B201E0A8287007C10F9 /* MyLink.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyLink.mm; sourceTree = "<group>"; };
 		FE944B211E0A8287007C10F9 /* MyLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLink.h; sourceTree = "<group>"; };
+		FEAFE2D61E1E2ADB00E0A9E7 /* tu er qi jin xing qu.mid */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; path = "tu er qi jin xing qu.mid"; sourceTree = "<group>"; };
 		FEF844B31E07AB8B00FC659A /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
 		FEFAD60E1DFFF6BB001B2DF7 /* spriteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spriteButton.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -341,6 +343,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FEAFE2D41E1E2A9E00E0A9E7 /* MIDI */,
 				521A8EA819F11F5000D177D7 /* fonts */,
 				3EACC98E19EE6D4300EB3C5E /* res */,
 				46880B7619C43A67006E1F66 /* CloseNormal.png */,
@@ -476,6 +479,14 @@
 			name = TempCplusAndOther;
 			sourceTree = "<group>";
 		};
+		FEAFE2D41E1E2A9E00E0A9E7 /* MIDI */ = {
+			isa = PBXGroup;
+			children = (
+				FEAFE2D61E1E2ADB00E0A9E7 /* tu er qi jin xing qu.mid */,
+			);
+			name = MIDI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -607,6 +618,7 @@
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
 				FEFAD60F1DFFF6BB001B2DF7 /* spriteButton.png in Resources */,
 				FE3CBBC01DF90B41007E6300 /* button_gray_disable.9.png in Resources */,
+				FEAFE2D71E1E2ADB00E0A9E7 /* tu er qi jin xing qu.mid in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

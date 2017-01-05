@@ -290,7 +290,7 @@
         }
     }
 
-    NSLog(@"预处理得出每一个事件的播放时间完毕");
+    //NSLog(@"预处理得出每一个事件的播放时间完毕");
     
 }
 
@@ -604,9 +604,9 @@
     //预处理事件之后chunkIndexArray重置为空
     _chunkIndexArray = nil;
     
-    NSLog(@"预处理键盘事件完毕");
+    //NSLog(@"预处理键盘事件完毕");
     
-    NSLog(@"最小的持续时间是%f",minDurationTime);
+    //NSLog(@"最小的持续时间是%f",minDurationTime);
 }
 
 

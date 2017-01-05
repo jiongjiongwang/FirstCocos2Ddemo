@@ -95,9 +95,10 @@
 {
     [super viewDidLoad];
     
+   const char *fileChar =[kFilePath cStringUsingEncoding:NSASCIIStringEncoding];
     
     //轨道头初始化
-    _chunkHead = [ChunkHeader sharedChunkHeaderFrom:kFilePath];
+    _chunkHead = [ChunkHeader sharedChunkHeaderFrom:fileChar];
     
     
     //处理playMusic播放类
@@ -274,7 +275,7 @@
 {
     if (_midiData == nil)
     {
-        _midiData = [NSData dataWithContentsOfFile:@kFilePath];
+        _midiData = [NSData dataWithContentsOfFile:kFilePath];
     }
     
     return _midiData;

@@ -11,7 +11,7 @@
 @implementation ChunkHeader
 
 
-+(instancetype)sharedChunkHeaderFrom:(char *)fileLocation
++(instancetype)sharedChunkHeaderFrom:(const char *)fileLocation
 {
     static ChunkHeader *instance;
     
